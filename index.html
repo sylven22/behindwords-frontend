@@ -352,6 +352,88 @@ textarea{
   .layout{grid-template-columns:1fr;}
   .sylven-line{width:100%;}
 }
+/* =========================
+   MOBILE OPTIMIZATION (Sylven Mode)
+========================= */
+@media (max-width: 600px){
+
+  body{
+    padding: 18px;
+  }
+
+  .sylven-header{
+    padding: 12px 14px;
+  }
+
+  .sylven-logo{
+    width: 56px;
+    height: 56px;
+    padding: 4px;
+  }
+
+  .sylven-title h1{
+    font-size: 18px;
+  }
+
+  .sylven-title p{
+    font-size: 12px;
+  }
+
+  .sylven-line{
+    width: 120px;
+    height: 2px;
+  }
+
+  /* Layout stacked */
+  .layout{
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Textarea improve */
+  textarea{
+    min-height: 140px;
+    font-size: 15px;
+    padding: 14px;
+  }
+
+  /* Buttons bigger */
+  .btn{
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  /* Reveal chips */
+  .reveal-chip{
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  /* Cards spacing */
+  .card{
+    padding: 16px;
+  }
+
+  .result-card{
+    padding: 14px;
+  }
+
+  .result-title{
+    font-size: 16px;
+  }
+
+  .result-body{
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  /* Particles less heavy */
+  .particle{
+    width: 3px;
+    height: 3px;
+    opacity: 0.28;
+  }
+}
 
 </style>
 </head>
@@ -562,4 +644,5 @@ document.getElementById('themeToggle').onclick = ()=>{
 </script>
 
 </body>
+
 </html>
