@@ -291,6 +291,12 @@ textarea{
   cursor:pointer;
   transition:0.25s ease;
 }
+.reveal-chip.analyzing {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+  transform: scale(0.98);
+}
 .reveal-chip:hover{
   border-color:rgba(150,80,255,0.7);
   box-shadow:0 8px 22px rgba(140,70,255,0.2);
@@ -436,7 +442,71 @@ textarea{
     opacity: 0.28;
   }
 }
+.analyzing-card .result-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
+.loading-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulseDot 1.2s ease-in-out infinite;
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.analyzing-card .result-body {
+  animation: softFade 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    opacity: .35;
+    transform: scale(.75);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes softFade {
+  from {
+    opacity: .4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (max-width: 600px) {
+  .reveal-chip {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .result-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+    .reveal-chips {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+    .result-body {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .result-title {
+    font-size: 15px;
+  }
 </style>
 </head>
 
@@ -505,7 +575,7 @@ textarea{
     </div>
 
     <div class="note">
-      Decode first → then click a chip to reveal analysis on the right.
+      Decode → choose a signal → reveal the layer.
     </div>
   </div>
 
@@ -513,13 +583,14 @@ textarea{
   <div class="card">
     <div style="display:flex;justify-content:space-between;margin-bottom:8px">
       <span style="font-weight:700;">Result</span>
-      <span style="color:var(--muted)">Local dummy mode</span>
+      <span style="color:var(--muted)">✦ Cognitive Analysis</span>
     </div>
     <div id="resultsArea" class="results">
-      <div class="result-card"><div class="result-title">(no reveals yet)</div><div class="result-body">Click a chip after Decode.</div></div>
-    </div>
+  <div class="result-card">
+    <div class="result-title">✦ Ready</div>
+    <div class="result-body">Decode a message to begin.</div>
   </div>
-
+</div>
 </div>
 </div>
 <div style="
@@ -547,7 +618,8 @@ const toneMapping = [
 ];
 
 let analysis = {surface:'', inside:'', hidden:'', next:''};
-let revealed = {};   // STOP duplicate cards
+let revealed = {}; 
+let isDecoding = false;  // STOP duplicate cards
 
 const BACKEND_URL = "https://behindwords-backend.vercel.app";
 function smartDecode(text){
@@ -592,6 +664,19 @@ const resultsArea = document.getElementById('resultsArea');
 const chips = document.querySelectorAll('.reveal-chip');
 
 decodeBtn.onclick = async () => {
+decodeBtn.disabled = true;
+isDecoding = true;
+chips.forEach(chip => chip.classList.add("analyzing"));
+decodeBtn.textContent = "⏳ Analyzing...";
+resultsArea.innerHTML = `
+  <div class="result-card analyzing-card">
+    <div class="result-title">
+      <span class="loading-dot"></span> Reading the message...
+    </div>
+    <div class="result-body">Sylven is analysing the signals</div>
+  </div>
+`;
+chips.forEach(chip => chip.disabled = true);
   const txt = document.getElementById('message').value.trim();
   if(!txt){ alert("Enter a message first."); return; }
 
@@ -607,16 +692,19 @@ const data = await response.json();
 
 console.log("Backend response:", data);
 const aiText = data.analysis || "";
+const cleanAiText = aiText.replace(/\*\*/g, "");
 
 const getSection = (start, end) => {
-  const startIndex = aiText.indexOf(start);
+  const text = aiText.replace(/\*\*/g, "").trim();
+
+  const startIndex = text.indexOf(start);
   if (startIndex === -1) return "";
 
   const contentStart = startIndex + start.length;
-  const endIndex = end ? aiText.indexOf(end, contentStart) : -1;
+  const endIndex = end ? text.indexOf(end, contentStart) : -1;
 
-  return aiText
-    .slice(contentStart, endIndex === -1 ? aiText.length : endIndex)
+  return text
+    .slice(contentStart, endIndex === -1 ? text.length : endIndex)
     .trim();
 };
 
@@ -626,21 +714,36 @@ analysis = {
   hidden: getSection("3. Hidden Reality", "4. Next Move"),
   next: getSection("4. Next Move")
 };
-  
+
+  console.log("Parsed analysis:", analysis);
+  resultsArea.innerHTML = `
+  <div class="result-card ready-card">
+    <div class="result-title">✦ Analysis ready</div>
+    <div class="result-body">Choose a signal to reveal</div>
+  </div>
+`;
+isDecoding = false;
+chips.forEach(chip => chip.classList.remove("analyzing"));
+  decodeBtn.textContent = "Decode";
+  decodeBtn.disabled = false;
+chips.forEach(chip => chip.disabled = false);
   revealed = {}; // reset revealed tracker
 
   // Clear right side completely — NO placeholder
-  resultsArea.innerHTML = "";
+ 
 };
 
 chips.forEach(chip => {
   chip.onclick = () => {
     const key = chip.dataset.key;
-    if(!analysis.surface){ alert("Decode first."); return; }
+    if (isDecoding) return;
+    console.log("CHIP CLICK - analysis:", analysis);
+    if(!analysis[key]){ alert("Decode first."); return; }
 
     if(revealed[key]) return; // STOP duplicate reveal ✔
 
     revealed[key] = true;
+    resultsArea.querySelector(".ready-card")?.remove();
 
     const titles = {
       surface: "Surface Behaviour",
@@ -652,7 +755,7 @@ chips.forEach(chip => {
     resultsArea.insertAdjacentHTML("afterbegin", `
       <div class="result-card">
         <div class="result-title">${titles[key]}</div>
-        <div class="result-body">${escapeHtml(analysis[key])}</div>
+       <div class="result-body">${escapeHtml(analysis[key])}</div>
       </div>
     `);
   };
@@ -671,6 +774,8 @@ document.getElementById('clear').onclick = ()=>{
 function escapeHtml(s){
   return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
+
+
 
 /* theme toggle */
 document.getElementById('themeToggle').onclick = ()=>{
