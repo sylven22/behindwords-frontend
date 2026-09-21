@@ -1,2583 +1,1253 @@
 <!doctype html>
 <html lang="en">
 <head>
-
-<link rel="icon" type="image/png" href="sylven_eye3.png">
-
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-
+<meta name="theme-color" content="#07050d"/>
+<link rel="icon" type="image/png" href="sylven_eye3.png">
 <title>BehindWords — Sylven Mode</title>
 
 <style>
-
 :root{
-  --bg-dark:#05040a;
-  --text:#e9f0f2;
-  --muted:#9aa3a9;
-  --accent1:#b57aff;
-  --accent2:#6a3cff;
-  --panel:rgba(255,255,255,0.03);
-  --radius:16px;
-  --danger:#ff7897;
-  --success:#7ff0b0;
+  --bg:#05040a;
+  --bg2:#0a0712;
+  --text:#eef0f4;
+  --muted:#9ca0ad;
+  --soft:#737787;
+  --accent:#bd83ff;
+  --accent2:#6f43ff;
+  --accent3:#e5cfff;
+  --line:rgba(255,255,255,.075);
+  --glass:rgba(17,11,29,.66);
+  --glass2:rgba(255,255,255,.035);
+  --success:#8ff0bd;
+  --danger:#ff8ca6;
+  --warning:#e6c27a;
+  --shadow:0 24px 80px rgba(0,0,0,.45);
+  --radius:22px;
 }
 
-/* =========================
-   RESET
-========================= */
-
-*{
-  box-sizing:border-box;
-}
-
-html,body{
-  margin:0;
-  min-height:100%;
-}
-
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
-  padding:32px;
-  font-family:Inter,system-ui,-apple-system,sans-serif;
+  margin:0;
+  min-height:100vh;
+  padding:22px;
   color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(800px 500px at 15% 5%,rgba(109,55,255,.14),transparent 70%),
+    radial-gradient(700px 500px at 90% 85%,rgba(181,91,255,.10),transparent 70%),
+    linear-gradient(180deg,#03030a 0%,#07050d 55%,#040309 100%);
   overflow-x:hidden;
-
+}
+button,input,textarea{font:inherit}
+button{user-select:none}
+body.ritual{
+  --bg:#080203;
+  --bg2:#130406;
+  --text:#fff1f1;
+  --muted:#c49a9d;
+  --soft:#8f666a;
+  --accent:#ff3b4f;
+  --accent2:#a3001b;
+  --accent3:#ffb2ba;
+  --line:rgba(255,72,91,.16);
+  --glass:rgba(28,5,9,.72);
+  --glass2:rgba(255,55,75,.045);
+  --success:#ff9a9a;
+  --danger:#ff4d5f;
+  --warning:#e4a15f;
+  --shadow:0 24px 90px rgba(0,0,0,.62);
   background:
-    radial-gradient(
-      600px at 30% 20%,
-      rgba(107,42,255,0.12),
-      transparent 70%
-    ),
-    radial-gradient(
-      800px at 80% 90%,
-      rgba(150,50,255,0.10),
-      transparent 70%
-    ),
-    linear-gradient(
-      180deg,
-      #02040a,
-      #05040a
-    );
+    radial-gradient(850px 520px at 12% 5%,rgba(190,0,30,.23),transparent 68%),
+    radial-gradient(720px 520px at 90% 80%,rgba(255,30,50,.13),transparent 70%),
+    linear-gradient(180deg,#050102 0%,#0b0204 52%,#030101 100%);
+}
+body.ritual::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(0deg,rgba(255,40,60,.018) 0 1px,transparent 1px 4px);
+  mix-blend-mode:screen;opacity:.5;
+}
+body.ritual .mist.one{background:#c50025}
+body.ritual .mist.two{background:#ff1d3d}
+body.ritual .particle{background:rgba(255,92,108,.75);box-shadow:0 0 12px rgba(255,35,58,.65)}
+body.ritual .panel,body.ritual .header{
+  border-color:rgba(255,55,75,.16);
+  box-shadow:0 24px 80px rgba(0,0,0,.58),0 0 50px rgba(150,0,20,.07);
+}
+body.ritual .app-logo,body.ritual .brand-logo{
+  border-color:rgba(255,55,75,.22);box-shadow:0 0 45px rgba(190,0,30,.20);
+}
+body.ritual .primary{
+  color:#fff;background:linear-gradient(100deg,#ff4658,#9d001b);
+  box-shadow:0 15px 42px rgba(190,0,30,.30);
+}
+body.ritual .usage{border-color:rgba(255,55,75,.22);background:rgba(180,0,25,.09)}
+body.ritual .usage-fill{background:linear-gradient(90deg,#ff5363,#a3001b)}
+body.ritual .reveal-chip:hover{border-color:rgba(255,70,90,.55);box-shadow:0 9px 28px rgba(180,0,30,.20)}
+body.ritual .reveal-chip.locked{border-color:rgba(255,70,90,.28);background:linear-gradient(100deg,rgba(255,55,75,.10),rgba(130,0,20,.08))}
+body.ritual .stack-card{
+  background:
+    radial-gradient(520px 230px at 12% 0%,rgba(255,50,70,.14),transparent 70%),
+    linear-gradient(145deg,rgba(37,7,12,.98),rgba(8,2,4,.99));
+  border-color:rgba(255,70,90,.16);
+  box-shadow:0 28px 75px rgba(0,0,0,.62),0 0 55px rgba(160,0,25,.09),inset 0 0 34px rgba(255,40,60,.018);
+}
+body.ritual .card-kicker{color:#ff9ca7}
+body.ritual .empty-orbit{border-color:rgba(255,65,85,.24);color:#ff9ca7;box-shadow:0 0 55px rgba(190,0,30,.16)}
+body.ritual .dot{background:#ff4054;box-shadow:0 0 14px #ff4054}
+body.ritual .veil-modal{background:rgba(8,0,2,.80)}
+body.ritual .veil-box{border-color:rgba(255,65,85,.25);background:linear-gradient(145deg,rgba(40,6,12,.99),rgba(7,1,3,.99));box-shadow:0 35px 100px rgba(0,0,0,.72),0 0 95px rgba(190,0,30,.18)}
+body.ritual .veil-symbol{color:#ff9da8;border-color:rgba(255,65,85,.30);box-shadow:0 0 60px rgba(190,0,30,.20)}
+body.ritual .toast{background:rgba(28,3,7,.96);border-color:rgba(255,65,85,.18)}
+
+body.light{
+  --bg:#f4f2f8;
+  --bg2:#ebe8f2;
+  --text:#17131e;
+  --muted:#686171;
+  --soft:#898290;
+  --line:rgba(20,10,30,.10);
+  --glass:rgba(255,255,255,.78);
+  --glass2:rgba(20,10,30,.035);
+  background:
+    radial-gradient(700px 500px at 20% 0%,rgba(137,82,255,.15),transparent 70%),
+    linear-gradient(180deg,#faf9fc,#eeeaf5);
 }
 
-/* =========================
-   PARTICLES
-========================= */
+button{border:0}
+::selection{background:rgba(189,131,255,.28)}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-thumb{background:rgba(189,131,255,.22);border-radius:99px}
 
-.particles{
-  pointer-events:none;
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-  z-index:0;
+/* ambient field */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.mist{
+  position:absolute;border-radius:50%;filter:blur(80px);opacity:.16;
+  animation:floatMist 18s ease-in-out infinite alternate;
 }
-
+.mist.one{width:260px;height:260px;left:-80px;bottom:12%;background:#7b43ff}
+.mist.two{width:320px;height:320px;right:-100px;top:10%;background:#b65cff;animation-delay:-6s}
+@keyframes floatMist{to{transform:translate(70px,-35px) scale(1.08)}}
 .particle{
-  position:absolute;
-  width:4px;
-  height:4px;
-  background:rgba(180,110,255,0.6);
-  border-radius:50%;
-  filter:blur(1px);
-  animation:drift 14s infinite linear;
-  opacity:.4;
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:rgba(205,157,255,.65);box-shadow:0 0 10px rgba(189,131,255,.5);
+  animation:rise linear infinite;opacity:.35;
+}
+@keyframes rise{
+  from{transform:translate3d(0,40px,0);opacity:0}
+  15%{opacity:.45}
+  to{transform:translate3d(90px,-900px,0);opacity:0}
 }
 
-@keyframes drift{
-
-  0%{
-    transform:translateY(0) translateX(0);
-    opacity:.4;
-  }
-
-  100%{
-    transform:translateY(-800px) translateX(200px);
-    opacity:0;
-  }
-
-}
-
-/* =========================================================
-   AUTH SCREEN
-========================================================= */
-
+/* auth */
 .auth-screen{
-
-  position:fixed;
-  inset:0;
-
-  z-index:100;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  padding:20px;
-
-  background:
-    radial-gradient(
-      500px at 50% 40%,
-      rgba(120,55,255,.18),
-      transparent 70%
-    ),
-    rgba(2,2,8,.96);
-
-  backdrop-filter:blur(20px);
-
-  transition:
-    opacity .75s ease,
-    visibility .75s ease;
-
+  position:fixed;inset:0;z-index:100;
+  display:grid;place-items:center;padding:18px;
+  background:rgba(2,2,8,.90);backdrop-filter:blur(24px);
+  transition:opacity .7s ease,visibility .7s ease;
 }
-
-.auth-screen.hidden{
-
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-
-}
-
-/* =========================
-   AUTH CARD
-========================= */
-
+.auth-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .auth-card{
-
-  width:min(440px,100%);
-
-  padding:34px;
-
-  border-radius:26px;
-
-  border:1px solid rgba(181,122,255,.20);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(28,15,48,.88),
-      rgba(8,7,17,.97)
-    );
-
-  box-shadow:
-
-    0 0 80px rgba(106,60,255,.20),
-
-    0 30px 100px rgba(0,0,0,.70),
-
-    inset 0 0 30px rgba(255,255,255,.02);
-
-  animation:authEnter .9s cubic-bezier(.2,.8,.25,1);
-
+  width:min(455px,100%);padding:34px;border-radius:30px;
+  border:1px solid rgba(189,131,255,.20);
+  background:linear-gradient(145deg,rgba(31,17,51,.90),rgba(7,6,14,.97));
+  box-shadow:0 0 100px rgba(111,67,255,.16),0 35px 100px rgba(0,0,0,.62);
+  animation:authIn .8s cubic-bezier(.2,.8,.2,1);
 }
-
-@keyframes authEnter{
-
-  0%{
-    opacity:0;
-    transform:
-      translateY(30px)
-      scale(.94);
-    filter:blur(10px);
-  }
-
-  70%{
-    opacity:1;
-    transform:
-      translateY(-3px)
-      scale(1.01);
-    filter:blur(0);
-  }
-
-  100%{
-    opacity:1;
-    transform:
-      translateY(0)
-      scale(1);
-  }
-
+@keyframes authIn{
+  from{opacity:0;transform:translateY(24px) scale(.96);filter:blur(8px)}
+  to{opacity:1;transform:none;filter:none}
 }
-
-/* =========================
-   AUTH BRAND
-========================= */
-
-.auth-brand{
-
-  display:flex;
-  align-items:center;
-  gap:15px;
-
-  margin-bottom:28px;
-
+.brand{display:flex;gap:14px;align-items:center;margin-bottom:27px}
+.brand-logo,.app-logo{
+  display:grid;place-items:center;flex:0 0 auto;
+  border-radius:18px;background:rgba(0,0,0,.30);
+  border:1px solid rgba(189,131,255,.12);
+  box-shadow:0 0 45px rgba(111,67,255,.18);
 }
-
-.auth-logo{
-
-  width:64px;
-  height:64px;
-
-  padding:5px;
-
-  border-radius:18px;
-
-  background:rgba(0,0,0,.35);
-
-  box-shadow:
-    0 0 45px rgba(140,70,255,.30);
-
-}
-
-.auth-logo img{
-
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-
-  border-radius:13px;
-
-}
-
-.auth-brand h1{
-
-  margin:0;
-
-  font-size:24px;
-
-}
-
-.auth-brand p{
-
-  margin:4px 0 0;
-
-  color:var(--muted);
-
-  font-size:13px;
-
-}
-
-/* =========================
-   AUTH TEXT
-========================= */
-
-.auth-heading{
-
-  margin:0;
-
-  font-size:28px;
-
-}
-
-.auth-subtitle{
-
-  margin:8px 0 22px;
-
-  color:var(--muted);
-
-  line-height:1.5;
-
-  font-size:14px;
-
-}
-
-/* =========================
-   AUTH TABS
-========================= */
-
+.brand-logo{width:62px;height:62px;padding:5px}
+.brand-logo img,.app-logo img{width:100%;height:100%;object-fit:cover;border-radius:13px}
+.brand h1{margin:0;font-size:23px;letter-spacing:.2px}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:12px}
+.auth-heading{margin:0;font-size:29px;letter-spacing:-.5px}
+.auth-subtitle{margin:8px 0 22px;color:var(--muted);line-height:1.55;font-size:14px}
 .auth-tabs{
-
-  display:grid;
-
-  grid-template-columns:1fr 1fr;
-
-  gap:6px;
-
-  padding:5px;
-
-  margin-bottom:18px;
-
-  border-radius:13px;
-
-  background:rgba(255,255,255,.035);
-
-  border:1px solid rgba(255,255,255,.07);
-
+  display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;
+  border:1px solid var(--line);background:var(--glass2);border-radius:14px;margin-bottom:18px
 }
-
 .auth-tab{
-
-  border:0;
-
-  border-radius:9px;
-
-  padding:10px;
-
-  background:transparent;
-
-  color:var(--muted);
-
-  font-weight:700;
-
-  cursor:pointer;
-
-  transition:.25s;
-
+  padding:10px;border-radius:10px;background:transparent;color:var(--muted);font-weight:750;cursor:pointer
 }
-
-.auth-tab.active{
-
-  color:var(--text);
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(181,122,255,.22),
-      rgba(106,60,255,.18)
-    );
-
+.auth-tab.active{color:var(--text);background:linear-gradient(100deg,rgba(189,131,255,.20),rgba(111,67,255,.15))}
+.field{margin-bottom:13px}
+.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}
+.field input{
+  width:100%;padding:14px 15px;border-radius:13px;outline:0;
+  border:1px solid var(--line);background:rgba(0,0,0,.26);color:var(--text)
 }
-
-/* =========================
-   INPUT
-========================= */
-
-.auth-field{
-
-  margin-bottom:13px;
-
+.field input:focus{border-color:rgba(189,131,255,.62);box-shadow:0 0 0 3px rgba(189,131,255,.08)}
+.primary{
+  color:#0a0610;background:linear-gradient(100deg,var(--accent),var(--accent2));
+  box-shadow:0 15px 40px rgba(111,67,255,.25)
 }
+.auth-submit{width:100%;padding:14px;border-radius:13px;font-weight:850;cursor:pointer}
+.auth-submit:disabled{opacity:.55;cursor:not-allowed}
+.auth-status{min-height:22px;margin-top:13px;color:var(--muted);font-size:13px;line-height:1.5}
+.auth-status.error{color:var(--danger)}
+.auth-status.success{color:var(--success)}
+.auth-foot{text-align:center;margin-top:20px;color:rgba(210,210,220,.35);font-size:11px}
 
-.auth-field label{
-
-  display:block;
-
-  margin-bottom:6px;
-
-  color:var(--muted);
-
-  font-size:12px;
-
+/* app */
+.app{position:relative;z-index:2;max-width:1180px;margin:auto;opacity:0;pointer-events:none;transform:translateY(16px)}
+.app.visible{pointer-events:auto;animation:appIn .8s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes appIn{to{opacity:1;transform:none}}
+.header{
+  display:flex;justify-content:space-between;align-items:center;gap:18px;
+  padding:15px 17px;margin-bottom:20px;border:1px solid var(--line);
+  border-radius:24px;background:var(--glass);backdrop-filter:blur(18px);box-shadow:var(--shadow)
 }
-
-.auth-field input{
-
-  width:100%;
-
-  padding:14px;
-
-  border-radius:12px;
-
-  outline:none;
-
-  border:1px solid rgba(255,255,255,.09);
-
-  background:rgba(0,0,0,.30);
-
-  color:var(--text);
-
-  transition:.25s;
-
-}
-
-.auth-field input:focus{
-
-  border-color:rgba(181,122,255,.7);
-
-  box-shadow:
-    0 0 0 3px rgba(181,122,255,.08),
-    0 0 25px rgba(106,60,255,.12);
-
-}
-
-/* =========================
-   AUTH BUTTON
-========================= */
-
-.auth-submit{
-
-  width:100%;
-
-  margin-top:5px;
-
-  padding:14px;
-
-  border:0;
-
-  border-radius:12px;
-
-  cursor:pointer;
-
-  font-weight:800;
-
-  color:#08030f;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--accent1),
-      var(--accent2)
-    );
-
-  box-shadow:
-    0 15px 40px rgba(140,70,255,.25);
-
-  transition:.25s;
-
-}
-
-.auth-submit:hover{
-
-  transform:translateY(-2px);
-
-  box-shadow:
-    0 20px 50px rgba(150,80,255,.35);
-
-}
-
-.auth-submit:disabled{
-
-  opacity:.5;
-
-  cursor:not-allowed;
-
-  transform:none;
-
-}
-
-/* =========================
-   AUTH STATUS
-========================= */
-
-.auth-status{
-
-  min-height:22px;
-
-  margin-top:14px;
-
-  color:var(--muted);
-
-  font-size:13px;
-
-  line-height:1.5;
-
-}
-
-.auth-status.error{
-  color:var(--danger);
-}
-
-.auth-status.success{
-  color:var(--success);
-}
-
-.auth-foot{
-
-  margin-top:20px;
-
-  text-align:center;
-
-  color:rgba(220,220,220,.35);
-
-  font-size:11px;
-
-}
-
-/* =========================================================
-   MAIN APP
-========================================================= */
-
-.app{
-
-  max-width:1180px;
-
-  margin:auto;
-
-  position:relative;
-
-  z-index:2;
-
-  opacity:0;
-
-  transform:translateY(20px);
-
-  pointer-events:none;
-
-}
-
-.app.visible{
-
-  pointer-events:auto;
-
-  animation:
-    appReveal
-    .95s
-    cubic-bezier(.2,.8,.25,1)
-    forwards;
-
-}
-
-@keyframes appReveal{
-
-  0%{
-
-    opacity:0;
-
-    transform:
-      translateY(20px)
-      scale(.985);
-
-    filter:blur(8px);
-
-  }
-
-  60%{
-
-    opacity:1;
-
-    transform:
-      translateY(-3px)
-      scale(1.01);
-
-    filter:blur(0);
-
-  }
-
-  100%{
-
-    opacity:1;
-
-    transform:
-      translateY(0)
-      scale(1);
-
-  }
-
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.sylven-header{
-
-  margin-bottom:26px;
-
-  padding:16px 20px;
-
-  border-radius:var(--radius);
-
-  backdrop-filter:blur(8px);
-
-  border:1px solid rgba(255,255,255,.05);
-
-  background:rgba(20,12,35,.25);
-
-  box-shadow:
-    0 0 22px rgba(140,80,255,.15),
-    0 12px 40px rgba(0,0,0,.6);
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-}
-
-.sylven-badge{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:16px;
-
-}
-
-.sylven-logo{
-
-  width:72px;
-
-  height:72px;
-
-  padding:6px;
-
-  border-radius:18px;
-
-  background:rgba(0,0,0,.2);
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  box-shadow:
-    0 0 50px rgba(130,60,255,.16);
-
-  transition:.28s;
-
-}
-
-.sylven-logo:hover{
-
-  transform:
-    translateY(-4px)
-    scale(1.03);
-
-}
-
-.sylven-logo img{
-
-  width:100%;
-  height:100%;
-
-  border-radius:14px;
-
-  object-fit:cover;
-
-}
-
-.sylven-title h1{
-
-  margin:0;
-
-  font-size:22px;
-
-  font-weight:700;
-
-  letter-spacing:.6px;
-
-}
-
-.sylven-title p{
-
-  margin:4px 0 0;
-
-  font-size:14px;
-
-  color:var(--muted);
-
-}
-
-.sylven-line{
-
-  width:180px;
-
-  height:2px;
-
-  margin-top:10px;
-
-  border-radius:999px;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--accent1),
-      var(--accent2)
-    );
-
-}
-
-.sylven-meta{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
-
-  color:var(--muted);
-
-  font-size:14px;
-
-}
-
-/* =========================
-   LAYOUT
-========================= */
-
-.layout{
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 420px;
-
-  gap:26px;
-
-}
-
-.card{
-
-  padding:20px;
-
-  border-radius:var(--radius);
-
-  background:rgba(255,255,255,.02);
-
-  border:1px solid rgba(255,255,255,.05);
-
-  box-shadow:
-    0 0 16px rgba(120,70,255,.10),
-    inset 0 0 12px rgba(255,255,255,.02),
-    0 16px 40px rgba(0,0,0,.55);
-
-  backdrop-filter:blur(4px);
-
-}
-
-/* =========================
-   TEXTAREA
-========================= */
-
-textarea{
-
-  width:100%;
-
-  min-height:160px;
-
-  padding:16px;
-
-  resize:none;
-
-  border-radius:14px;
-
-  border:1px solid rgba(255,255,255,.06);
-
-  outline:none;
-
-  background:rgba(0,0,0,.25);
-
-  color:var(--text);
-
-  font-size:15.5px;
-
-  box-shadow:
-    inset 0 0 20px rgba(0,0,0,.4);
-
-}
-
-textarea:focus{
-
-  border-color:
-    rgba(181,122,255,.5);
-
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.controls{
-
-  display:flex;
-
-  gap:12px;
-
-  margin-top:16px;
-
-}
-
+.header-brand{display:flex;align-items:center;gap:13px;min-width:0}
+.app-logo{width:60px;height:60px;padding:5px}
+.header-title h1{margin:0;font-size:20px;letter-spacing:.2px}
+.header-title p{margin:4px 0 0;color:var(--muted);font-size:12px}
+.header-line{width:150px;height:2px;margin-top:8px;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.header-actions{display:flex;align-items:center;gap:8px}
 .btn{
-
-  padding:11px 16px;
-
-  border-radius:999px;
-
-  font-weight:700;
-
-  cursor:pointer;
-
-  transition:.25s;
-
+  padding:10px 14px;border-radius:999px;font-size:13px;font-weight:760;cursor:pointer;
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease
 }
-
-.btn.primary{
-
-  border:0;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--accent1),
-      var(--accent2)
-    );
-
-  color:#08030f;
-
-  box-shadow:
-    0 12px 36px rgba(140,70,255,.25);
-
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{color:var(--text);border:1px solid var(--line);background:var(--glass2)}
+.btn.primary{border:0}
+.usage{
+  min-width:146px;padding:8px 12px;border-radius:999px;border:1px solid rgba(189,131,255,.18);
+  background:rgba(189,131,255,.08)
 }
+.usage-top{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#d9c8ed}
+.usage-track{height:4px;margin-top:6px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.usage-fill{height:100%;width:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .45s ease}
 
-.btn.ghost{
-
-  background:transparent;
-
-  border:1px solid rgba(255,255,255,.10);
-
-  color:var(--text);
-
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 410px;gap:20px}
+.panel{
+  border:1px solid var(--line);border-radius:24px;background:var(--glass);
+  backdrop-filter:blur(16px);box-shadow:var(--shadow)
 }
-
-.btn:hover{
-
-  transform:translateY(-2px);
-
+.input-panel{padding:20px}
+.panel-label{font-weight:800;font-size:14px}
+.panel-hint{margin-top:4px;color:var(--muted);font-size:12px}
+textarea{
+  width:100%;min-height:190px;margin-top:14px;padding:17px;resize:vertical;
+  border-radius:17px;outline:none;border:1px solid var(--line);
+  background:rgba(0,0,0,.22);color:var(--text);line-height:1.55;font-size:15px
 }
-
-/* =========================
-   REVEAL CHIPS
-========================= */
-
-.reveal-row{
-
-  display:flex;
-
-  gap:10px;
-
-  flex-wrap:wrap;
-
-  margin-top:16px;
-
-}
-
+textarea:focus{border-color:rgba(189,131,255,.5);box-shadow:0 0 0 3px rgba(189,131,255,.07)}
+.controls{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.decode{padding:11px 19px}
+.input-foot{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:12px;color:var(--soft);font-size:11px}
+.reveal-heading{margin-top:20px;color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.reveal-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
 .reveal-chip{
-
-  padding:8px 14px;
-
-  border-radius:999px;
-
-  border:1px solid rgba(255,255,255,.08);
-
-  background:rgba(0,0,0,.25);
-
-  color:var(--text);
-
-  font-weight:700;
-
-  cursor:pointer;
-
-  transition:.25s;
-
+  display:inline-flex;align-items:center;gap:7px;padding:10px 13px;border-radius:999px;
+  border:1px solid var(--line);background:rgba(0,0,0,.20);color:var(--text);
+  font-size:12px;font-weight:750;cursor:pointer;transition:.25s
 }
+.reveal-chip:hover{transform:translateY(-2px);border-color:rgba(189,131,255,.45);box-shadow:0 9px 24px rgba(111,67,255,.13)}
+.reveal-chip.locked{border-color:rgba(189,131,255,.22);background:linear-gradient(100deg,rgba(189,131,255,.08),rgba(111,67,255,.05))}
+.reveal-chip.analyzing{opacity:.35;pointer-events:none}
+.note{margin-top:13px;color:var(--soft);font-size:11px}
 
-.reveal-chip:hover{
-
-  border-color:
-    rgba(150,80,255,.7);
-
-  box-shadow:
-    0 8px 22px rgba(140,70,255,.2);
-
-  transform:translateY(-3px);
-
+/* result panel */
+.result-panel{padding:18px;min-height:500px;overflow:hidden}
+.result-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.result-head strong{font-size:14px}
+.result-head span{color:var(--muted);font-size:11px}
+.stack-wrap{position:relative;min-height:420px;touch-action:pan-y;overscroll-behavior:contain}
+.stack-empty{
+  min-height:400px;display:grid;place-items:center;text-align:center;color:var(--muted);
+  padding:30px
 }
-
-.reveal-chip.analyzing{
-
-  opacity:.35;
-
-  cursor:not-allowed;
-
+.empty-orbit{width:62px;height:62px;margin:0 auto 14px;border-radius:50%;border:1px solid rgba(189,131,255,.18);display:grid;place-items:center;color:var(--accent3);box-shadow:0 0 45px rgba(111,67,255,.12)}
+.empty-title{font-weight:800;color:var(--text);margin-bottom:5px}
+.empty-text{font-size:12px;line-height:1.55}
+.stack-card{
+  position:absolute;inset:0;padding:20px;border-radius:21px;border:1px solid rgba(255,255,255,.08);
+  background:
+    radial-gradient(500px 220px at 10% 0%,rgba(189,131,255,.10),transparent 70%),
+    linear-gradient(145deg,rgba(25,17,38,.96),rgba(8,7,14,.98));
+  box-shadow:0 24px 60px rgba(0,0,0,.45),inset 0 0 30px rgba(255,255,255,.015);
+  overflow:auto;transform:translateY(var(--y,0)) scale(var(--s,1));opacity:var(--o,1);
+  transform-origin:50% 100%;transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .35s ease;
+  cursor:grab;will-change:transform;user-select:none;touch-action:pan-y
 }
+.stack-card.active{cursor:grab}
+.stack-card.dragging{cursor:grabbing;transition:none!important;user-select:none}
+.stack-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:9px}
+.stack-nav-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--glass2);color:var(--text);cursor:pointer;transition:.2s}
+.stack-nav-btn:hover{transform:translateY(-1px);border-color:rgba(189,131,255,.45)}
+body.ritual .stack-nav-btn:hover{border-color:rgba(255,70,90,.55);box-shadow:0 0 22px rgba(180,0,30,.18)}
 
-/* =========================
-   RESULTS
-========================= */
+body.light .stack-card{background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(245,242,250,.98))}
+.stack-card:active{cursor:grabbing}
+.stack-card.active{z-index:10}
+.stack-card.behind-1{z-index:9}
+.stack-card.behind-2{z-index:8}
+.stack-card.behind-3{z-index:7}
+.card-kicker{color:var(--accent3);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:850}
+.card-title{margin:7px 0 11px;font-size:19px}
+.card-body{white-space:pre-wrap;font-size:14px;line-height:1.72;color:var(--text)}
+.card-meta{display:flex;justify-content:space-between;gap:10px;margin-top:17px;color:var(--soft);font-size:10px}
+.swipe-hint{text-align:center;margin-top:9px;color:var(--soft);font-size:10px;opacity:.9}
+.stack-count{text-align:center;margin-top:8px;color:var(--muted);font-size:10px}
 
-.results{
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:14px;
-
+/* premium veil */
+.veil-modal{
+  position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:18px;
+  background:rgba(2,1,7,.72);backdrop-filter:blur(20px);opacity:0;visibility:hidden;pointer-events:none;transition:.35s
 }
-
-.result-card{
-
-  padding:16px;
-
-  border-radius:14px;
-
-  background:rgba(255,255,255,.02);
-
-  border:1px solid rgba(255,255,255,.05);
-
-  box-shadow:
-    0 0 14px rgba(120,70,255,.12),
-    inset 0 0 14px rgba(255,255,255,.02),
-    0 14px 30px rgba(0,0,0,.5);
-
-  animation:resultIn .35s ease;
-
+.veil-modal.open{opacity:1;visibility:visible;pointer-events:auto}
+.veil-box{
+  width:min(470px,100%);padding:31px;border-radius:28px;text-align:center;
+  border:1px solid rgba(189,131,255,.23);
+  background:linear-gradient(145deg,rgba(28,17,46,.98),rgba(7,5,13,.99));
+  box-shadow:0 35px 100px rgba(0,0,0,.65),0 0 90px rgba(111,67,255,.15);
+  transform:translateY(15px) scale(.97);transition:.4s cubic-bezier(.2,.8,.2,1)
 }
+.veil-modal.open .veil-box{transform:none}
+.veil-symbol{width:70px;height:70px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(189,131,255,.24);color:var(--accent3);font-size:25px;box-shadow:0 0 55px rgba(111,67,255,.18)}
+.veil-box h2{margin:0;font-size:26px}
+.veil-box p{color:var(--muted);font-size:13px;line-height:1.65;margin:10px auto 20px;max-width:360px}
+.premium-list{display:grid;gap:7px;text-align:left;margin:0 0 22px;padding:0;list-style:none}
+.premium-list li{padding:9px 11px;border-radius:11px;background:rgba(255,255,255,.035);color:#d8d1df;font-size:12px}
+.modal-actions{display:flex;gap:8px}
+.modal-actions button{flex:1}
+.small-close{margin-top:13px;color:var(--soft);font-size:11px;cursor:pointer}
 
-@keyframes resultIn{
-
-  from{
-
-    opacity:0;
-
-    transform:
-      scale(.94)
-      translateY(10px);
-
-  }
-
-  to{
-
-    opacity:1;
-
-    transform:
-      scale(1)
-      translateY(0);
-
-  }
-
+/* toast */
+.toast{
+  position:fixed;left:50%;bottom:22px;z-index:150;transform:translate(-50%,20px);
+  padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(15,10,23,.94);
+  color:var(--text);font-size:12px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.3s
 }
+.toast.show{opacity:1;transform:translate(-50%,0)}
 
-.result-title{
+/* loading */
+.loading{display:inline-flex;align-items:center;gap:8px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 13px var(--accent);animation:pulse 1.1s infinite}
+@keyframes pulse{50%{opacity:.35;transform:scale(.72)}}
 
-  font-weight:800;
-
-  font-size:17px;
-
-  color:var(--accent1);
-
-  margin-bottom:8px;
-
+/* responsive */
+@media(max-width:920px){.layout{grid-template-columns:1fr}.result-panel{min-height:0}}
+@media(max-width:650px){
+  body{padding:12px}
+  .auth-card{padding:25px}
+  .header{padding:11px 12px;border-radius:20px}
+  .app-logo{width:49px;height:49px;border-radius:15px}
+  .header-title h1{font-size:16px}
+  .header-title p{font-size:10px}
+  .header-line{width:105px;margin-top:6px}
+  .header-actions{gap:5px}
+  .usage{min-width:112px;padding:7px 9px}
+  .usage-top{font-size:9px}
+  .header-actions .btn{padding:8px 9px;font-size:11px}
+  .theme-btn{display:inline-flex}
+  .input-panel,.result-panel{padding:14px;border-radius:20px}
+  textarea{min-height:155px;font-size:14px}
+  .reveal-row{display:grid;grid-template-columns:1fr 1fr}
+  .reveal-chip{justify-content:center;padding:10px 7px;font-size:11px}
+  .result-panel{overflow:visible}
+  .stack-wrap{min-height:455px}
+  .stack-card{padding:17px;border-radius:18px}
+  .card-title{font-size:17px}
+  .card-body{font-size:13px;line-height:1.68}
+  .input-foot{align-items:flex-start}
+  .veil-box{padding:25px}
 }
-
-.result-body{
-
-  white-space:pre-wrap;
-
-  font-size:15px;
-
-  line-height:1.55;
-
-}
-
-.loading-dot{
-
-  display:inline-block;
-
-  width:8px;
-
-  height:8px;
-
-  border-radius:50%;
-
-  background:var(--accent1);
-
-  box-shadow:
-    0 0 12px var(--accent1);
-
-  animation:pulseDot 1.2s infinite;
-
-}
-
-@keyframes pulseDot{
-
-  0%,100%{
-
-    opacity:.35;
-
-    transform:scale(.75);
-
-  }
-
-  50%{
-
-    opacity:1;
-
-    transform:scale(1.15);
-
-  }
-
-}
-
-.analyzing-card .result-body{
-
-  animation:
-    softFade
-    1.5s
-    infinite
-    alternate;
-
-}
-
-@keyframes softFade{
-
-  from{opacity:.4}
-
-  to{opacity:1}
-
-}
-
-/* =========================
-   USAGE
-========================= */
-
-.usage-badge{
-
-  padding:7px 11px;
-
-  border-radius:999px;
-
-  background:rgba(181,122,255,.10);
-
-  border:1px solid rgba(181,122,255,.18);
-
-  color:#d9c5ff;
-
-  font-size:12px;
-
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:920px){
-
-  .layout{
-
-    grid-template-columns:1fr;
-
-  }
-
-}
-
-@media(max-width:600px){
-
-  body{
-
-    padding:18px;
-
-  }
-
-  .auth-card{
-
-    padding:24px;
-
-  }
-
-  .sylven-header{
-
-    padding:12px 14px;
-
-  }
-
-  .sylven-logo{
-
-    width:56px;
-
-    height:56px;
-
-  }
-
-  .sylven-title h1{
-
-    font-size:18px;
-
-  }
-
-  .sylven-title p{
-
-    font-size:12px;
-
-  }
-
-  .sylven-line{
-
-    width:120px;
-
-  }
-
-  .layout{
-
-    gap:20px;
-
-  }
-
-  .card{
-
-    padding:16px;
-
-  }
-
-  textarea{
-
-    min-height:140px;
-
-  }
-
-  .btn{
-
-    padding:10px 14px;
-
-    font-size:14px;
-
-  }
-
-  .reveal-chip{
-
-    font-size:13px;
-
-    padding:10px 12px;
-
-  }
-
-  .result-body{
-
-    font-size:14px;
-
-  }
-
-  .sylven-meta{
-
-    gap:5px;
-
-  }
-
-  .sylven-meta .usage-badge{
-
-    display:none;
-
-  }
-
-}
-
 </style>
-
 </head>
 
 <body>
-
-<!-- =========================================================
-     PARTICLES
-========================================================= -->
-
-<div class="particles">
-
-  <div class="particle"
-       style="top:80%;left:10%;animation-duration:10s">
-  </div>
-
-  <div class="particle"
-       style="top:90%;left:50%;animation-duration:14s">
-  </div>
-
-  <div class="particle"
-       style="top:95%;left:75%;animation-duration:12s">
-  </div>
-
-  <div class="particle"
-       style="top:85%;left:30%;animation-duration:11s">
-  </div>
-
-  <div class="particle"
-       style="top:88%;left:60%;animation-duration:13s">
-  </div>
-
+<div class="ambient">
+  <div class="mist one"></div><div class="mist two"></div>
+  <div class="particle" style="left:8%;top:92%;animation-duration:12s"></div>
+  <div class="particle" style="left:24%;top:86%;animation-duration:15s"></div>
+  <div class="particle" style="left:49%;top:94%;animation-duration:11s"></div>
+  <div class="particle" style="left:72%;top:90%;animation-duration:14s"></div>
+  <div class="particle" style="left:88%;top:83%;animation-duration:17s"></div>
 </div>
 
-
-<!-- =========================================================
-     AUTH SCREEN
-========================================================= -->
-
 <section id="authScreen" class="auth-screen">
-
   <div class="auth-card">
-
-    <div class="auth-brand">
-
-      <div class="auth-logo">
-        <img
-          src="./sylven_eye3.png"
-          alt="Sylven">
-      </div>
-
-      <div>
-
-        <h1>BehindWords</h1>
-
-        <p>
-          Sylven Mode • silent observation
-        </p>
-
-      </div>
-
+    <div class="brand">
+      <div class="brand-logo"><img src="./sylven_eye3.png" alt="Sylven"></div>
+      <div><h1>BehindWords</h1><p>Sylven Mode • quiet observation</p></div>
     </div>
-
-
-    <h2 id="authHeading"
-        class="auth-heading">
-
-      Enter the quiet side.
-
-    </h2>
-
-
-    <p id="authSubtitle"
-       class="auth-subtitle">
-
-      Sign in to continue your BehindWords session.
-
-    </p>
-
+    <h2 id="authHeading" class="auth-heading">Enter the quiet side.</h2>
+    <p id="authSubtitle" class="auth-subtitle">Sign in to continue your BehindWords session.</p>
 
     <div class="auth-tabs">
-
-      <button
-        id="loginTab"
-        class="auth-tab active"
-        type="button">
-
-        Log in
-
-      </button>
-
-
-      <button
-        id="signupTab"
-        class="auth-tab"
-        type="button">
-
-        Create account
-
-      </button>
-
+      <button id="loginTab" class="auth-tab active" type="button">Log in</button>
+      <button id="signupTab" class="auth-tab" type="button">Create account</button>
     </div>
 
-
-    <div class="auth-field">
-
-      <label for="authEmail">
-        Email
-      </label>
-
-      <input
-        id="authEmail"
-        type="email"
-        autocomplete="email"
-        placeholder="you@example.com">
-
+    <div class="field">
+      <label for="authEmail">Email</label>
+      <input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com">
     </div>
-
-
-    <div class="auth-field">
-
-      <label for="authPassword">
-        Password
-      </label>
-
-      <input
-        id="authPassword"
-        type="password"
-        autocomplete="current-password"
-        placeholder="••••••••">
-
+    <div class="field">
+      <label for="authPassword">Password</label>
+      <input id="authPassword" type="password" autocomplete="current-password" placeholder="••••••••">
     </div>
-
-
-    <button
-      id="authSubmit"
-      class="auth-submit"
-      type="button">
-
-      Enter BehindWords
-
-    </button>
-
-
-    <div
-      id="authStatus"
-      class="auth-status">
-    </div>
-
-
-    <div class="auth-foot">
-
-      Your account is securely handled by Supabase Authentication.
-
-    </div>
-
+    <button id="authSubmit" class="auth-submit primary" type="button">Enter BehindWords</button>
+    <div id="authStatus" class="auth-status"></div>
+    <div class="auth-foot">Your account is securely handled by Supabase Authentication.</div>
   </div>
-
 </section>
 
-
-<!-- =========================================================
-     MAIN APP
-========================================================= -->
-
-<main id="app"
-      class="app">
-
-  <header class="sylven-header">
-
-    <div class="sylven-badge">
-
-      <div class="sylven-logo">
-
-        <img
-          src="./sylven_eye3.png"
-          alt="Sylven logo">
-
+<main id="app" class="app">
+  <header class="header">
+    <div class="header-brand">
+      <div class="app-logo"><img src="./sylven_eye3.png" alt="Sylven logo"></div>
+      <div class="header-title">
+        <h1>BehindWords — Sylven Mode</h1>
+        <p>Read the surface. Explore the mind. Look beneath.</p>
+        <div class="header-line"></div>
       </div>
-
-
-      <div class="sylven-title">
-
-        <h1>
-          BehindWords — Sylven Mode
-        </h1>
-
-        <p>
-          Silent observation • tactical reveals
-        </p>
-
-        <div class="sylven-line"></div>
-
-      </div>
-
     </div>
 
-
-    <div class="sylven-meta">
-
-      <div
-        id="usageBadge"
-        class="usage-badge">
-
-        Free uses: 3
-
+    <div class="header-actions">
+      <div class="usage" id="usageBox" title="Your remaining First Glimpses">
+        <div class="usage-top"><span>First Glimpses</span><strong id="usageText">3 / 3</strong></div>
+        <div class="usage-track"><div id="usageFill" class="usage-fill"></div></div>
       </div>
-
-      <button
-        id="logoutBtn"
-        class="btn ghost"
-        type="button">
-
-        Log out
-
-      </button>
-
-      <button
-        id="themeToggle"
-        class="btn ghost"
-        type="button">
-
-        Theme
-
-      </button>
-
+      <button id="themeToggle" class="btn ghost theme-btn" type="button" title="Enter the crimson night">☾ Crimson</button>
+      <button id="logoutBtn" class="btn ghost" type="button">Log out</button>
     </div>
-
   </header>
 
-
   <div class="layout">
+    <section class="panel input-panel">
+      <div class="panel-label">Bring a message into the light.</div>
+      <div class="panel-hint">Paste a message or a small piece of conversation. Context creates clarity.</div>
 
-
-    <!-- LEFT -->
-
-    <section class="card">
-
-      <div
-        style="font-weight:700;margin-bottom:8px">
-
-        Paste message
-
-      </div>
-
-
-      <textarea
-        id="message"
-        placeholder="Paste chat message...">
-      </textarea>
-
+      <textarea id="message" placeholder="Paste a message here…"></textarea>
 
       <div class="controls">
-
-        <button
-          class="btn primary"
-          id="decode"
-          type="button">
-
-          Decode
-
-        </button>
-
-
-        <button
-          class="btn ghost"
-          id="copyIn"
-          type="button">
-
-          Copy
-
-        </button>
-
-
-        <button
-          class="btn ghost"
-          id="clear"
-          type="button">
-
-          Clear
-
-        </button>
-
+        <button class="btn primary decode" id="decode" type="button">✦ Decode</button>
+        <button class="btn ghost" id="copyIn" type="button">Copy</button>
+        <button class="btn ghost" id="clear" type="button">Clear</button>
       </div>
 
-
+      <div class="reveal-heading">Choose a layer</div>
       <div class="reveal-row">
-
-        <div
-          class="reveal-chip"
-          data-key="surface">
-
-          Surface Behaviour
-
-        </div>
-
-
-        <div
-          class="reveal-chip"
-          data-key="inside">
-
-          Inside Psychology
-
-        </div>
-
-
-        <div
-          class="reveal-chip"
-          data-key="hidden">
-
-          Hidden Reality
-
-        </div>
-
-
-        <div
-          class="reveal-chip"
-          data-key="next">
-
-          Next Move
-
-        </div>
-
+        <div class="reveal-chip" data-key="surface">◌ Surface Behaviour</div>
+        <div class="reveal-chip" data-key="inside">🧠 Inside Psychology</div>
+        <div class="reveal-chip" data-key="next">🪞 Next Move</div>
+        <div class="reveal-chip" data-key="veil">✦ The Veil <span>🔒</span></div>
       </div>
 
-
-      <div class="note">
-
-        Decode → choose a signal → reveal the layer.
-
+      <div class="input-foot">
+        <span>Each reveal becomes a layer you can swipe through.</span>
+        <span>✦ Sylven</span>
       </div>
-
     </section>
 
-
-    <!-- RIGHT -->
-
-    <section class="card">
-
-      <div
-        style="
-          display:flex;
-          justify-content:space-between;
-          margin-bottom:8px;
-        ">
-
-        <span style="font-weight:700">
-          Result
-        </span>
-
-        <span style="color:var(--muted)">
-          ✦ Cognitive Analysis
-        </span>
-
+    <section class="panel result-panel">
+      <div class="result-head">
+        <strong>Revelations</strong>
+        <span id="stackHint">A quiet place for what unfolds.</span>
       </div>
 
-
-      <div
-        id="resultsArea"
-        class="results">
-
-        <div class="result-card">
-
-          <div class="result-title">
-            ✦ Ready
+      <div id="stackWrap" class="stack-wrap">
+        <div class="stack-empty" id="emptyState">
+          <div>
+            <div class="empty-orbit">✦</div>
+            <div class="empty-title">Nothing revealed yet.</div>
+            <div class="empty-text">Decode a message, then choose a layer.<br>Each insight will unfold above the last.</div>
           </div>
-
-          <div class="result-body">
-            Decode a message to begin.
-          </div>
-
         </div>
-
       </div>
 
+      <div class="stack-nav" aria-label="Move through revealed layers"><button id="stackPrev" class="stack-nav-btn" type="button" aria-label="Previous layer">←</button><div id="swipeHint" class="swipe-hint" hidden>drag / swipe the cards</div><button id="stackNext" class="stack-nav-btn" type="button" aria-label="Next layer">→</button></div>
+      <div id="stackCount" class="stack-count"></div>
     </section>
-
   </div>
 
-
-  <div
-    style="
-      text-align:center;
-      font-size:11px;
-      color:rgba(200,200,200,.35);
-      margin-top:28px;
-      letter-spacing:.3px;
-    ">
-
-    Don't misuse it, it is just for learning
-    how human psychology works.
-
+  <div style="text-align:center;font-size:10px;color:var(--soft);margin:22px 0 4px;letter-spacing:.2px">
+    BehindWords is an interpretation tool for learning and reflection — not a literal window into another person's mind.
   </div>
-
 </main>
 
+<!-- The Veil / Premium doorway -->
+<div id="veilModal" class="veil-modal" aria-hidden="true">
+  <div class="veil-box">
+    <div class="veil-symbol">✦</div>
+    <h2>The Veil</h2>
+    <p>
+      The first glimpse shows what is visible. Deeper layers explore what may sit beneath the words,
+      with more context, patterns and psychological detail.
+    </p>
+    <ul class="premium-list">
+      <li>🌑 Hidden Reality — deeper interpretation</li>
+      <li>🌿 Emotional Dynamics — interacting emotional signals</li>
+      <li>👁 Pattern Lens — patterns worth noticing</li>
+      <li>🪞 Conversation Echoes — coming to Deep Sight</li>
+    </ul>
+    <div class="modal-actions">
+      <button id="closeVeil" class="btn ghost" type="button">Stay here</button>
+      <button id="enterDeepSight" class="btn primary" type="button">✦ Enter Deep Sight</button>
+    </div>
+    <div id="deepStatus" class="small-close">Deep Sight access is checked securely before the deeper analysis is opened.</div>
+  </div>
+</div>
 
-<!-- =========================================================
-     SUPABASE
-========================================================= -->
+<div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
 <script>
-
 /* =========================================================
-   SUPABASE CONFIG
+   CONFIG
 ========================================================= */
-
-const SUPABASE_URL =
-  "https://yzwqshdodiqmmpslukxh.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_cU1zDLuPmGaZHSaO5zylww_RcBvyajg";
-
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
-
-
-/* =========================================================
-   AUTH ELEMENTS
-========================================================= */
-
-const authScreen =
-  document.getElementById("authScreen");
-
-const authHeading =
-  document.getElementById("authHeading");
-
-const authSubtitle =
-  document.getElementById("authSubtitle");
-
-const authEmail =
-  document.getElementById("authEmail");
-
-const authPassword =
-  document.getElementById("authPassword");
-
-const authSubmit =
-  document.getElementById("authSubmit");
-
-const authStatus =
-  document.getElementById("authStatus");
-
-const loginTab =
-  document.getElementById("loginTab");
-
-const signupTab =
-  document.getElementById("signupTab");
-
-const app =
-  document.getElementById("app");
-
-const usageBadge =
-  document.getElementById("usageBadge");
-
-
-let authMode = "login";
-
-
-/* =========================================================
-   AUTH STATUS
-========================================================= */
-
-function setAuthStatus(
-  message,
-  type = ""
-){
-
-  authStatus.textContent =
-    message;
-
-  authStatus.className =
-    "auth-status " + type;
-
-}
-
-
-/* =========================================================
-   AUTH MODE
-========================================================= */
-
-function setAuthMode(mode){
-
-  authMode = mode;
-
-  const signup =
-    mode === "signup";
-
-
-  loginTab.classList.toggle(
-    "active",
-    !signup
-  );
-
-  signupTab.classList.toggle(
-    "active",
-    signup
-  );
-
-
-  if(signup){
-
-    authHeading.textContent =
-      "Create your space.";
-
-    authSubtitle.textContent =
-      "Create an account to enter BehindWords and explore the layers behind a message.";
-
-    authSubmit.textContent =
-      "Create account";
-
-    authPassword.autocomplete =
-      "new-password";
-
-  }else{
-
-    authHeading.textContent =
-      "Enter the quiet side.";
-
-    authSubtitle.textContent =
-      "Sign in to continue your BehindWords session.";
-
-    authSubmit.textContent =
-      "Enter BehindWords";
-
-    authPassword.autocomplete =
-      "current-password";
-
-  }
-
-
-  setAuthStatus("");
-
-}
-
-
-loginTab.onclick = () =>
-  setAuthMode("login");
-
-
-signupTab.onclick = () =>
-  setAuthMode("signup");
-
-
-/* =========================================================
-   ENTER APP ANIMATION
-========================================================= */
-
-function enterApp(){
-
-  authScreen.classList.add(
-    "hidden"
-  );
-
-
-  setTimeout(() => {
-
-    app.classList.add(
-      "visible"
-    );
-
-  },180);
-
-
-  updateUsage();
-
-}
-
-
-/* =========================================================
-   AUTH SUBMIT
-========================================================= */
-
-authSubmit.onclick = async () => {
-
-  const email =
-    authEmail.value.trim();
-
-  const password =
-    authPassword.value;
-
-
-  if(!email || !password){
-
-    setAuthStatus(
-      "Enter your email and password.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(password.length < 6){
-
-    setAuthStatus(
-      "Password must be at least 6 characters.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  authSubmit.disabled = true;
-
-
-  authSubmit.textContent =
-    authMode === "signup"
-      ? "Creating..."
-      : "Entering...";
-
-
-  try{
-
-    if(authMode === "signup"){
-
-      const {
-        data,
-        error
-      } =
-      await supabaseClient.auth.signUp({
-
-        email,
-        password
-
-      });
-
-
-      if(error)
-        throw error;
-
-
-      if(data.session){
-
-        enterApp();
-
-      }else{
-
-        setAuthMode("login");
-
-        setAuthStatus(
-          "Account created. Check your email, confirm it, then log in.",
-          "success"
-        );
-
-      }
-
-    }else{
-
-      const {
-        error
-      } =
-      await supabaseClient.auth.signInWithPassword({
-
-        email,
-        password
-
-      });
-
-
-      if(error)
-        throw error;
-
-
-      enterApp();
-
-    }
-
-
-  }catch(error){
-
-    console.error(
-      "AUTH ERROR:",
-      error
-    );
-
-
-    setAuthStatus(
-      error.message ||
-      "Authentication failed.",
-      "error"
-    );
-
-
-  }finally{
-
-    authSubmit.disabled =
-      false;
-
-    authSubmit.textContent =
-      authMode === "signup"
-        ? "Create account"
-        : "Enter BehindWords";
-
-  }
-
-};
-
-
-/* =========================================================
-   ENTER WITH ENTER KEY
-========================================================= */
-
-authPassword.addEventListener(
-  "keydown",
-  event => {
-
-    if(event.key === "Enter"){
-
-      authSubmit.click();
-
-    }
-
-  }
+const SUPABASE_URL = "https://yzwqshdodiqmmpslukxh.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_cU1zDLuPmGaZHSaO5zylww_RcBvyajg";
+const BACKEND_URL = "https://behindwords-backend.vercel.app";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
 );
 
-
 /* =========================================================
-   SESSION RESTORE
+   ELEMENTS
 ========================================================= */
+const authScreen = document.getElementById("authScreen");
+const authHeading = document.getElementById("authHeading");
+const authSubtitle = document.getElementById("authSubtitle");
+const authEmail = document.getElementById("authEmail");
+const authPassword = document.getElementById("authPassword");
+const authSubmit = document.getElementById("authSubmit");
+const authStatus = document.getElementById("authStatus");
+const loginTab = document.getElementById("loginTab");
+const signupTab = document.getElementById("signupTab");
+const app = document.getElementById("app");
 
-supabaseClient.auth
-.getSession()
-.then(({data}) => {
+const usageText = document.getElementById("usageText");
+const usageFill = document.getElementById("usageFill");
 
-  if(data.session){
+const messageEl = document.getElementById("message");
+const decodeBtn = document.getElementById("decode");
+const stackWrap = document.getElementById("stackWrap");
+const emptyState = document.getElementById("emptyState");
+const stackHint = document.getElementById("stackHint");
+const swipeHint = document.getElementById("swipeHint");
+const stackCount = document.getElementById("stackCount");
+const chips = document.querySelectorAll(".reveal-chip");
 
-    enterApp();
+const veilModal = document.getElementById("veilModal");
+const toastEl = document.getElementById("toast");
 
-  }
-
-});
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-document
-.getElementById("logoutBtn")
-.onclick = async () => {
-
-  await supabaseClient.auth.signOut();
-
-  app.classList.remove(
-    "visible"
-  );
-
-  authScreen.classList.remove(
-    "hidden"
-  );
-
-  authEmail.value = "";
-
-  authPassword.value = "";
-
-  setAuthMode("login");
-
-};
-
-
-/* =========================================================
-   UPDATE USAGE
-========================================================= */
-
-async function updateUsage(){
-
-  try{
-
-    const {
-      data:sessionData
-    } =
-    await supabaseClient.auth.getSession();
-
-
-    const session =
-      sessionData.session;
-
-
-    if(!session)
-      return;
-
-
-    const response =
-      await fetch(
-        `${BACKEND_URL}/usage`,
-        {
-
-          headers:{
-            "Authorization":
-              `Bearer ${session.access_token}`
-          }
-
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(response.ok){
-
-      usageBadge.textContent =
-        `Free uses: ${data.remaining}`;
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "USAGE ERROR:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   EXISTING AI ANALYSIS
-========================================================= */
-
-let analysis = {
-
-  surface:"",
-  inside:"",
-  hidden:"",
-  next:""
-
-};
-
-let revealed = {};
-
+let authMode = "login";
 let isDecoding = false;
 
+let analysis = {
+  surface: "",
+  inside: "",
+  hidden: "",
+  next: "",
+  interesting: ""
+};
 
-const BACKEND_URL =
-  "https://behindwords-backend.vercel.app";
+let deepAnalysis = {
+  hiddenReality: "",
+  emotionalDynamics: "",
+  patternLens: "",
+  unsaidTension: "",
+  responseArchitecture: "",
+  deepSight: ""
+};
 
-
-const decodeBtn =
-  document.getElementById(
-    "decode"
-  );
-
-const resultsArea =
-  document.getElementById(
-    "resultsArea"
-  );
-
-const chips =
-  document.querySelectorAll(
-    ".reveal-chip"
-  );
-
+/* Stack state: newest card is index 0 / visually on top. */
+let revealedCards = [];
+let dragStartX = 0;
+let dragDeltaX = 0;
+let dragging = false;
 
 /* =========================================================
-   ESCAPE HTML
+   HELPERS
 ========================================================= */
-
 function escapeHtml(text){
-
-  return String(text)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    );
-
+  return String(text ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
 }
 
+function showToast(message){
+  toastEl.textContent = message;
+  toastEl.classList.add("show");
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => toastEl.classList.remove("show"), 2200);
+}
+
+function setAuthStatus(message,type=""){
+  authStatus.textContent = message;
+  authStatus.className = "auth-status " + type;
+}
+
+function setAuthMode(mode){
+  authMode = mode;
+  const signup = mode === "signup";
+  loginTab.classList.toggle("active", !signup);
+  signupTab.classList.toggle("active", signup);
+
+  if(signup){
+    authHeading.textContent = "Create your space.";
+    authSubtitle.textContent = "Create an account to enter BehindWords and explore the layers behind a message.";
+    authSubmit.textContent = "Create account";
+    authPassword.autocomplete = "new-password";
+  }else{
+    authHeading.textContent = "Enter the quiet side.";
+    authSubtitle.textContent = "Sign in to continue your BehindWords session.";
+    authSubmit.textContent = "Enter BehindWords";
+    authPassword.autocomplete = "current-password";
+  }
+  setAuthStatus("");
+}
+
+function enterApp(){
+  authScreen.classList.add("hidden");
+  setTimeout(() => app.classList.add("visible"), 100);
+  updateUsage();
+}
+
+async function getSession(){
+  const {data} = await supabaseClient.auth.getSession();
+  return data.session;
+}
+
+/* =========================================================
+   AUTH
+========================================================= */
+loginTab.onclick = () => setAuthMode("login");
+signupTab.onclick = () => setAuthMode("signup");
+
+authSubmit.onclick = async () => {
+  const email = authEmail.value.trim();
+  const password = authPassword.value;
+
+  if(!email || !password){
+    setAuthStatus("Enter your email and password.","error");
+    return;
+  }
+
+  if(password.length < 6){
+    setAuthStatus("Password must be at least 6 characters.","error");
+    return;
+  }
+
+  authSubmit.disabled = true;
+  authSubmit.textContent = authMode === "signup" ? "Creating…" : "Entering…";
+
+  try{
+    if(authMode === "signup"){
+      const {data,error} = await supabaseClient.auth.signUp({email,password});
+      if(error) throw error;
+
+      if(data.session){
+        enterApp();
+      }else{
+        setAuthMode("login");
+        setAuthStatus("Account created. Check your email, confirm it, then log in.","success");
+      }
+    }else{
+      const {error} = await supabaseClient.auth.signInWithPassword({email,password});
+      if(error) throw error;
+      enterApp();
+    }
+  }catch(error){
+    console.error("AUTH ERROR:",error);
+    setAuthStatus(error.message || "Authentication failed.","error");
+  }finally{
+    authSubmit.disabled = false;
+    authSubmit.textContent = authMode === "signup" ? "Create account" : "Enter BehindWords";
+  }
+};
+
+authPassword.addEventListener("keydown",e => {
+  if(e.key === "Enter") authSubmit.click();
+});
+
+supabaseClient.auth.getSession().then(({data}) => {
+  if(data.session) enterApp();
+});
+
+supabaseClient.auth.onAuthStateChange((_event,session) => {
+  if(session && authScreen.classList.contains("hidden") === false){
+    enterApp();
+  }
+});
+
+/* =========================================================
+   USAGE
+========================================================= */
+function paintUsage(remaining){
+  const safe = Math.max(0,Math.min(3,Number(remaining) || 0));
+  usageText.textContent = `${safe} / 3`;
+  usageFill.style.width = `${(safe/3)*100}%`;
+
+  if(safe === 0){
+    usageFill.style.opacity = ".42";
+  }else{
+    usageFill.style.opacity = "1";
+  }
+}
+
+async function updateUsage(){
+  try{
+    const session = await getSession();
+    if(!session) return;
+
+    const response = await fetch(`${BACKEND_URL}/usage`,{
+      headers:{Authorization:`Bearer ${session.access_token}`}
+    });
+
+    const data = await response.json();
+
+    if(response.ok && typeof data.remaining !== "undefined"){
+      paintUsage(data.remaining);
+    }else{
+      console.error("USAGE READ ERROR:",data);
+    }
+  }catch(error){
+    console.error("USAGE ERROR:",error);
+  }
+}
+
+/* =========================================================
+   AI RESPONSE PARSING
+   Free and Deep Sight responses use named sections.
+   The parser stays tolerant so the model can evolve without breaking the UI.
+========================================================= */
+function cleanAIText(value){
+  return String(value || "")
+    .replace(/\r/g, "")
+    // Remove markdown formatting before removing numbering so things like
+    // "3. **text**" cannot leave a stray "3." behind.
+    .replace(/^\s*#{1,6}\s*/gm, "")
+    .replace(/\*\*(.*?)\*\*/gs, "$1")
+    .replace(/__(.*?)__/gs, "$1")
+    .replace(/`{1,3}/g, "")
+    .replace(/^\s*[-•]\s+/gm, "")
+    .replace(/^\s*\d+[.)]\s*/gm, "")
+    .replace(/^\s*[*_]+\s*$/gm, "")
+    .replace(/^\s*\d+[.)]\s*$/gm, "")
+    .replace(/[ \t]+$/gm, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function normalizeHeading(line){
+  return String(line || "")
+    .replace(/^\s*#{1,6}\s*/, "")
+    .replace(/^\s*\d+[.)]\s*/, "")
+    .replace(/\*\*/g, "")
+    .replace(/__/g, "")
+    .replace(/[🌙🧠🌿🪞✨👁️]/gu, "")
+    .replace(/[✨✦:：]/gu, "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .toUpperCase();
+}
+
+function parseDeepAnalysis(raw){
+  const text = String(raw || "").replace(/\r/g, "").trim();
+  const lines = text.split("\n");
+  const headingMap = {
+    "HIDDEN REALITY":"hiddenReality",
+    "EMOTIONAL DYNAMICS":"emotionalDynamics",
+    "PATTERN LENS":"patternLens",
+    "UNSAID TENSION":"unsaidTension",
+    "RESPONSE ARCHITECTURE":"responseArchitecture",
+    "DEEP SIGHT":"deepSight"
+  };
+  const result = {
+    hiddenReality:"",
+    emotionalDynamics:"",
+    patternLens:"",
+    unsaidTension:"",
+    responseArchitecture:"",
+    deepSight:""
+  };
+  let current = null;
+  for(const line of lines){
+    const heading = normalizeHeading(line);
+    const key = headingMap[heading];
+    if(key){ current = key; continue; }
+    if(current) result[current] += (result[current] ? "\n" : "") + line;
+  }
+  Object.keys(result).forEach(key => result[key] = cleanAIText(result[key]));
+  return result;
+}
+
+function parseAnalysis(raw){
+  const text = String(raw || "").replace(/\r/g, "").trim();
+  const lines = text.split("\n");
+
+  const headingMap = {
+    "SURFACE BEHAVIOUR":"surface",
+    "SURFACE":"surface",
+    "INSIDE PSYCHOLOGY":"inside",
+    "DEEPER LAYER":"hidden",
+    "BENEATH THE SURFACE":"hidden",
+    "HIDDEN REALITY":"hidden",
+    "NEXT MOVE":"next",
+    "THE INTERESTING PART":"interesting",
+    "INTERESTING PART":"interesting"
+  };
+
+  const sections = [];
+  let current = null;
+
+  for(const line of lines){
+    const heading = normalizeHeading(line);
+    const key = headingMap[heading];
+
+    if(key){
+      current = {key, lines:[]};
+      sections.push(current);
+      continue;
+    }
+
+    if(current) current.lines.push(line);
+  }
+
+  const result = {surface:"",inside:"",hidden:"",next:"",interesting:""};
+
+  for(const section of sections){
+    const content = cleanAIText(section.lines.join("\n"));
+    if(!content) continue;
+
+    // If the model ever repeats a section, keep the first useful content and
+    // append later content instead of silently losing it.
+    result[section.key] = result[section.key]
+      ? `${result[section.key]}\n\n${content}`
+      : content;
+  }
+
+  // Last-resort fallback for an unexpected response format.
+  if(!Object.values(result).some(Boolean)){
+    result.surface = cleanAIText(text);
+  }
+
+  // Keep the extra "Interesting Part" available for future premium layers,
+  // while the current free UI exposes only Surface, Inside, and Next Move.
+  if(result.interesting && !result.hidden){
+    result.hidden = result.interesting;
+  }
+
+  return result;
+}
+
+/* =========================================================
+   STACK CARDS
+========================================================= */
+const titles = {
+  surface:{title:"Surface Behaviour",icon:"🌙",kicker:"WHAT IS VISIBLE"},
+  inside:{title:"Inside Psychology",icon:"🧠",kicker:"WHY IT MAY HAPPEN"},
+  hidden:{title:"Deeper Layer",icon:"🌿",kicker:"BENEATH THE SURFACE"},
+  next:{title:"Next Move",icon:"🪞",kicker:"WHAT TO NOTICE NEXT"},
+  hiddenReality:{title:"Hidden Reality",icon:"🌑",kicker:"DEEP SIGHT"},
+  emotionalDynamics:{title:"Emotional Dynamics",icon:"🫀",kicker:"DEEP SIGHT"},
+  patternLens:{title:"Pattern Lens",icon:"👁",kicker:"DEEP SIGHT"},
+  unsaidTension:{title:"Unsaid Tension",icon:"🕯",kicker:"DEEP SIGHT"},
+  responseArchitecture:{title:"Response Architecture",icon:"🪞",kicker:"DEEP SIGHT"},
+  deepSight:{title:"Deep Sight",icon:"✨",kicker:"FINAL SIGNAL"}
+};
+
+function renderStack(){
+  stackWrap.querySelectorAll(".stack-card").forEach(el => el.remove());
+
+  if(revealedCards.length === 0){
+    emptyState.hidden = false;
+    swipeHint.hidden = true;
+    stackCount.textContent = "";
+    stackHint.textContent = "A quiet place for what unfolds.";
+    return;
+  }
+
+  emptyState.hidden = true;
+  swipeHint.hidden = revealedCards.length < 2;
+  stackCount.textContent = `${revealedCards.length} layer${revealedCards.length === 1 ? "" : "s"} revealed`;
+  stackHint.textContent = revealedCards.length > 1 ? "Swipe to move through the layers." : "One layer has unfolded.";
+
+  revealedCards.forEach((item,index) => {
+    const meta = titles[item.key];
+    const card = document.createElement("article");
+    card.className = "stack-card " + (index === 0 ? "active" : `behind-${Math.min(index,3)}`);
+    const offset = Math.min(index,3);
+    card.style.setProperty("--y",`${offset * 10}px`);
+    card.style.setProperty("--s",`${1 - offset * .025}`);
+    card.style.setProperty("--o",`${1 - offset * .17}`);
+    card.innerHTML = `
+      <div class="card-kicker">${meta.icon} ${meta.kicker}</div>
+      <div class="card-title">${escapeHtml(meta.title)}</div>
+      <div class="card-body">${escapeHtml(item.text)}</div>
+      <div class="card-meta"><span>BehindWords • Sylven</span><span>${index === 0 ? "active layer" : "behind"}</span></div>
+    `;
+    card.addEventListener("pointerdown",e => startDrag(e,card));
+    card.addEventListener("pointermove",e => moveDrag(e,card));
+    card.addEventListener("pointerup",e => endDrag(e,card));
+    card.addEventListener("pointercancel",e => endDrag(e,card));
+    stackWrap.appendChild(card);
+  });
+}
+
+function revealCard(key){
+  if(!analysis[key]) return false;
+  if(revealedCards.some(card => card.key === key)) return false;
+
+  revealedCards.unshift({key,text:analysis[key]});
+  renderStack();
+  return true;
+}
+
+function startDrag(e,card){
+  if(!card.classList.contains("active") || revealedCards.length < 2) return;
+  dragging = true;
+  dragStartX = e.clientX;
+  dragDeltaX = 0;
+  card.classList.add("dragging");
+  card.setPointerCapture?.(e.pointerId);
+  e.preventDefault();
+}
+
+function moveDrag(e,card){
+  if(!dragging || !card.classList.contains("active")) return;
+  dragDeltaX = e.clientX - dragStartX;
+  const limited = Math.max(-170,Math.min(170,dragDeltaX));
+  card.style.transform = `translateX(${limited}px) rotate(${limited/20}deg)`;
+}
+
+function endDrag(e,card){
+  if(!dragging) return;
+  dragging = false;
+  card.classList.remove("dragging");
+
+  const threshold = 48;
+  if(Math.abs(dragDeltaX) > threshold){
+    moveLayer(dragDeltaX < 0 ? "next" : "prev");
+  }else{
+    renderStack();
+  }
+  dragDeltaX = 0;
+}
+
+function moveLayer(direction){
+  if(revealedCards.length < 2) return;
+  if(direction === "next"){
+    const top = revealedCards.shift();
+    revealedCards.push(top);
+  }else{
+    const last = revealedCards.pop();
+    revealedCards.unshift(last);
+  }
+  renderStack();
+}
+
+// Pointer events are attached to the active card and also recovered at window level,
+// so desktop mouse dragging keeps working even when the pointer leaves the card.
+window.addEventListener("pointermove", e => {
+  if(!dragging) return;
+  const active = stackWrap.querySelector(".stack-card.active");
+  if(active) moveDrag(e,active);
+});
+
+window.addEventListener("pointerup", e => {
+  if(!dragging) return;
+  const active = stackWrap.querySelector(".stack-card.active");
+  if(active) endDrag(e,active);
+});
+
+stackWrap.addEventListener("dragstart", e => e.preventDefault());
+
+// Mouse wheel / trackpad navigation on desktop.
+stackWrap.addEventListener("wheel", e => {
+  if(revealedCards.length < 2) return;
+  if(Math.abs(e.deltaX) < 10 && Math.abs(e.deltaY) < 10) return;
+  e.preventDefault();
+  moveLayer((e.deltaY > 0 || e.deltaX > 0) ? "next" : "prev");
+},{passive:false});
+
+document.getElementById("stackPrev").onclick = () => moveLayer("prev");
+document.getElementById("stackNext").onclick = () => moveLayer("next");
 
 /* =========================================================
    DECODE
 ========================================================= */
-
-decodeBtn.onclick =
-async () => {
-
-  const txt =
-    document
-      .getElementById("message")
-      .value
-      .trim();
-
+decodeBtn.onclick = async () => {
+  const txt = messageEl.value.trim();
 
   if(!txt){
-
-    alert(
-      "Enter a message first."
-    );
-
+    showToast("Give me a message to observe first.");
+    messageEl.focus();
     return;
-
   }
 
-
-  const {
-    data:sessionData
-  } =
-  await supabaseClient.auth
-    .getSession();
-
-
-  const session =
-    sessionData.session;
-
-
+  const session = await getSession();
   if(!session){
-
-    alert(
-      "Please log in first."
-    );
-
+    showToast("Please enter BehindWords first.");
     return;
-
   }
 
+  isDecoding = true;
+  decodeBtn.disabled = true;
+  decodeBtn.textContent = "⏳ Unfolding…";
+  chips.forEach(chip => chip.classList.add("analyzing"));
 
-  decodeBtn.disabled =
-    true;
-
-  isDecoding =
-    true;
-
-
-  chips.forEach(
-    chip =>
-      chip.classList.add(
-        "analyzing"
-      )
-  );
-
-
-  decodeBtn.textContent =
-    "⏳ Analyzing...";
-
-
-  resultsArea.innerHTML = `
-
-    <div class="result-card analyzing-card">
-
-      <div class="result-title">
-
-        <span class="loading-dot"></span>
-
-        Reading the message...
-
-      </div>
-
-      <div class="result-body">
-
-        Sylven is analysing the signals
-
-      </div>
-
+  stackWrap.querySelectorAll(".stack-card").forEach(el => el.remove());
+  emptyState.hidden = false;
+  emptyState.innerHTML = `
+    <div>
+      <div class="empty-orbit"><span class="loading"><i class="dot"></i></span></div>
+      <div class="empty-title">Following the signal…</div>
+      <div class="empty-text">Observing the words, context and psychological cues.</div>
     </div>
-
   `;
-
+  swipeHint.hidden = true;
+  stackCount.textContent = "";
 
   try{
+    const response = await fetch(`${BACKEND_URL}/analyze`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${session.access_token}`
+      },
+      body:JSON.stringify({message:txt})
+    });
 
-    const response =
-      await fetch(
-        `${BACKEND_URL}/analyze`,
-        {
-
-          method:"POST",
-
-          headers:{
-
-            "Content-Type":
-              "application/json",
-
-            "Authorization":
-              `Bearer ${session.access_token}`
-
-          },
-
-          body:JSON.stringify({
-
-            message:txt
-
-          })
-
-        }
-      );
-
-
-    const data =
-      await response.json();
-
+    const data = await response.json();
 
     if(response.status === 403){
-
-      resultsArea.innerHTML = `
-
-        <div class="result-card">
-
-          <div class="result-title">
-
-            🔒 Free limit reached
-
-          </div>
-
-          <div class="result-body">
-
-            You have used all 3 free analyses.
-            Premium access will unlock continued analysis.
-
-          </div>
-
-        </div>
-
-      `;
-
+      paintUsage(0);
+      showVeil();
       return;
-
     }
-
 
     if(!response.ok){
-
-      throw new Error(
-        data.error ||
-        "Analysis request failed."
-      );
-
+      throw new Error(data.message || data.error || "Analysis request failed.");
     }
 
+    analysis = parseAnalysis(data.analysis);
 
-    const aiText =
-      (data.analysis || "")
-      .replace(/\*\*/g,"")
-      .trim();
-
-
-    const getSection =
-    (
-      start,
-      end
-    ) => {
-
-      const startIndex =
-        aiText.indexOf(start);
-
-
-      if(startIndex === -1)
-        return "";
-
-
-      const contentStart =
-        startIndex +
-        start.length;
-
-
-      const endIndex =
-        end
-          ? aiText.indexOf(
-              end,
-              contentStart
-            )
-          : -1;
-
-
-      return aiText
-        .slice(
-          contentStart,
-          endIndex === -1
-            ? aiText.length
-            : endIndex
-        )
-        .trim();
-
-    };
-
-
-    analysis = {
-
-      surface:
-        getSection(
-          "1. Surface Behaviour",
-          "2. Inside Psychology"
-        ),
-
-      inside:
-        getSection(
-          "2. Inside Psychology",
-          "3. Hidden Reality"
-        ),
-
-      hidden:
-        getSection(
-          "3. Hidden Reality",
-          "4. Next Move"
-        ),
-
-      next:
-        getSection(
-          "4. Next Move"
-        )
-
-    };
-
-
-    revealed = {};
-
-
-    resultsArea.innerHTML = `
-
-      <div class="result-card ready-card">
-
-        <div class="result-title">
-
-          ✦ Analysis ready
-
-        </div>
-
-        <div class="result-body">
-
-          Choose a signal to reveal
-
-        </div>
-
-      </div>
-
-    `;
-
-
-    if(
-      typeof data.remaining !==
-      "undefined"
-    ){
-
-      usageBadge.textContent =
-        `Free uses: ${data.remaining}`;
-
+    if(typeof data.remaining !== "undefined"){
+      paintUsage(data.remaining);
     }else{
-
       updateUsage();
-
     }
 
+    revealedCards = [];
+    renderStack();
+
+    // Decode only prepares the layers. Nothing is revealed automatically.
+    emptyState.hidden = false;
+    emptyState.innerHTML = `
+      <div>
+        <div class="empty-orbit">✦</div>
+        <div class="empty-title">The message has been observed.</div>
+        <div class="empty-text">Choose a layer above to reveal what sits beneath the words.</div>
+      </div>
+    `;
 
   }catch(error){
-
-    console.error(
-      "ANALYSIS ERROR:",
-      error
-    );
-
-
-    resultsArea.innerHTML = `
-
-      <div class="result-card">
-
-        <div class="result-title">
-
-          Something went wrong
-
-        </div>
-
-        <div class="result-body">
-
-          ${escapeHtml(
-            error.message
-          )}
-
-        </div>
-
+    console.error("ANALYSIS ERROR:",error);
+    emptyState.hidden = false;
+    emptyState.innerHTML = `
+      <div>
+        <div class="empty-orbit">!</div>
+        <div class="empty-title">The signal was interrupted.</div>
+        <div class="empty-text">${escapeHtml(error.message)}</div>
       </div>
-
     `;
-
-
+    showToast("Something interrupted the analysis.");
   }finally{
-
-    isDecoding =
-      false;
-
-
-    chips.forEach(
-      chip =>
-        chip.classList.remove(
-          "analyzing"
-        )
-    );
-
-
-    decodeBtn.textContent =
-      "Decode";
-
-    decodeBtn.disabled =
-      false;
-
+    isDecoding = false;
+    decodeBtn.disabled = false;
+    decodeBtn.textContent = "✦ Decode";
+    chips.forEach(chip => chip.classList.remove("analyzing"));
   }
-
 };
-
 
 /* =========================================================
    REVEAL CHIPS
 ========================================================= */
+chips.forEach(chip => {
+  chip.onclick = () => {
+    if(isDecoding) return;
 
-chips.forEach(
-  chip => {
+    const key = chip.dataset.key;
 
-    chip.onclick = () => {
+    if(key === "veil"){
+      showVeil();
+      return;
+    }
 
-      const key =
-        chip.dataset.key;
+    if(!Object.values(analysis).some(Boolean)){
+      showToast("Decode a message first.");
+      return;
+    }
 
-
-      if(isDecoding)
-        return;
-
-
-      if(!analysis[key]){
-
-        alert(
-          "Decode first."
-        );
-
-        return;
-
-      }
-
-
-      if(revealed[key])
-        return;
-
-
-      revealed[key] =
-        true;
-
-
-      resultsArea
-        .querySelector(
-          ".ready-card"
-        )
-        ?.remove();
-
-
-      const titles = {
-
-        surface:
-          "Surface Behaviour",
-
-        inside:
-          "Inside Psychology",
-
-        hidden:
-          "Hidden Reality",
-
-        next:
-          "Next Move"
-
-      };
-
-
-      resultsArea
-      .insertAdjacentHTML(
-
-        "afterbegin",
-
-        `
-
-        <div class="result-card">
-
-          <div class="result-title">
-
-            ${titles[key]}
-
-          </div>
-
-          <div class="result-body">
-
-            ${escapeHtml(
-              analysis[key]
-            )}
-
-          </div>
-
-        </div>
-
-        `
-
-      );
-
-    };
-
-  }
-);
-
-
-/* =========================================================
-   COPY
-========================================================= */
-
-document
-.getElementById("copyIn")
-.onclick = () => {
-
-  navigator.clipboard.writeText(
-
-    document
-      .getElementById("message")
-      .value
-
-  );
-
-};
-
-
-/* =========================================================
-   CLEAR
-========================================================= */
-
-document
-.getElementById("clear")
-.onclick = () => {
-
-  document
-    .getElementById("message")
-    .value = "";
-
-
-  analysis = {
-
-    surface:"",
-    inside:"",
-    hidden:"",
-    next:""
-
+    if(revealCard(key)){
+      showToast(`${titles[key].title} unfolded.`);
+    }else if(revealedCards.some(card => card.key === key)){
+      showToast("That layer is already open.");
+    }else{
+      showToast("This layer is not available yet.");
+    }
   };
+});
 
+/* =========================================================
+   VEIL
+========================================================= */
+function showVeil(){
+  veilModal.classList.add("open");
+  veilModal.setAttribute("aria-hidden","false");
+}
+function hideVeil(){
+  veilModal.classList.remove("open");
+  veilModal.setAttribute("aria-hidden","true");
+}
+document.getElementById("closeVeil").onclick = hideVeil;
+veilModal.addEventListener("click",e => {
+  if(e.target === veilModal) hideVeil();
+});
+document.getElementById("enterDeepSight").onclick = async () => {
+  const session = await getSession();
+  if(!session){
+    hideVeil();
+    showToast("Please enter BehindWords first.");
+    return;
+  }
 
-  revealed = {};
+  const message = messageEl.value.trim();
+  if(!message){
+    hideVeil();
+    showToast("Decode a message first.");
+    return;
+  }
 
+  const button = document.getElementById("enterDeepSight");
+  const status = document.getElementById("deepStatus");
+  button.disabled = true;
+  button.textContent = "⏳ Opening Deep Sight…";
+  status.textContent = "Checking your access and unfolding the deeper layer…";
 
-  resultsArea.innerHTML = `
+  try{
+    const response = await fetch(`${BACKEND_URL}/deep-analyze`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${session.access_token}`
+      },
+      body:JSON.stringify({message})
+    });
+    const data = await response.json();
 
-    <div class="result-card">
+    if(response.status === 403){
+      status.textContent = "Deep Sight is not active on this account yet.";
+      showToast("The Veil is still closed.");
+      return;
+    }
+    if(!response.ok) throw new Error(data.error || "Deep Sight could not open.");
 
-      <div class="result-title">
-
-        ✦ Ready
-
-      </div>
-
-      <div class="result-body">
-
-        Decode a message to begin.
-
-      </div>
-
-    </div>
-
-  `;
-
+    deepAnalysis = parseDeepAnalysis(data.analysis);
+    const deepOrder = [
+      "deepSight",
+      "responseArchitecture",
+      "unsaidTension",
+      "patternLens",
+      "emotionalDynamics",
+      "hiddenReality"
+    ];
+    const available = deepOrder.filter(key => deepAnalysis[key]);
+    available.forEach(key => {
+      if(!revealedCards.some(card => card.key === key)){
+        revealedCards.unshift({key,text:deepAnalysis[key]});
+      }
+    });
+    renderStack();
+    hideVeil();
+    showToast("Deep Sight opened.");
+  }catch(error){
+    console.error("DEEP SIGHT ERROR:",error);
+    status.textContent = error.message || "Deep Sight was interrupted.";
+    showToast("The deeper signal was interrupted.");
+  }finally{
+    button.disabled = false;
+    button.textContent = "✦ Enter Deep Sight";
+  }
 };
 
+/* =========================================================
+   COPY / CLEAR
+========================================================= */
+document.getElementById("copyIn").onclick = async () => {
+  if(!messageEl.value.trim()){
+    showToast("There is nothing to copy yet.");
+    return;
+  }
+  try{
+    await navigator.clipboard.writeText(messageEl.value);
+    showToast("Message copied.");
+  }catch{
+    showToast("Copy was blocked by the browser.");
+  }
+};
+
+document.getElementById("clear").onclick = () => {
+  messageEl.value = "";
+  analysis = {surface:"",inside:"",hidden:"",next:"",interesting:""};
+  deepAnalysis = {hiddenReality:"",emotionalDynamics:"",patternLens:"",unsaidTension:"",responseArchitecture:"",deepSight:""};
+  revealedCards = [];
+  renderStack();
+  showToast("The space is quiet again.");
+};
 
 /* =========================================================
    THEME
 ========================================================= */
+const themeToggle = document.getElementById("themeToggle");
+function applyRitualTheme(on){
+  document.body.classList.toggle("ritual", on);
+  document.body.classList.remove("light");
+  themeToggle.textContent = on ? "☀ Normal" : "☾ Crimson";
+  themeToggle.title = on ? "Return to the normal Sylven theme" : "Enter the crimson night";
+  localStorage.setItem("behindwords-theme", on ? "ritual" : "normal");
+}
+applyRitualTheme(localStorage.getItem("behindwords-theme") === "ritual");
+themeToggle.onclick = () => applyRitualTheme(!document.body.classList.contains("ritual"));
 
-document
-.getElementById("themeToggle")
-.onclick = () => {
-
-  document.body.classList.toggle(
-    "light"
-  );
-
-
-  const light =
-    document.body
-      .classList
-      .contains("light");
-
-
-  document.body.style.background =
-    light
-      ? "linear-gradient(180deg,#f5f7fb,#eef2f7)"
-      : "linear-gradient(180deg,#02040a,#05040a)";
-
-
-  document
-    .querySelectorAll(".card")
-    .forEach(card => {
-
-      card.style.background =
-        light
-          ? "white"
-          : "rgba(255,255,255,.02)";
-
-    });
-
+/* =========================================================
+   LOGOUT
+========================================================= */
+document.getElementById("logoutBtn").onclick = async () => {
+  await supabaseClient.auth.signOut();
+  app.classList.remove("visible");
+  authScreen.classList.remove("hidden");
+  authEmail.value = "";
+  authPassword.value = "";
+  setAuthMode("login");
 };
 
+/* =========================================================
+   KEYBOARD SWIPE FALLBACK
+========================================================= */
+document.addEventListener("keydown",e => {
+  if(e.key === "Escape") hideVeil();
+});
 </script>
-
 </body>
 </html>
