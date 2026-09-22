@@ -48,7 +48,12 @@
 <button class="chip" data-key="surface">◌ Surface Behaviour</button>
 <button class="chip" data-key="inside">🧠 Inside Psychology</button>
 <button class="chip" data-key="next">🪞 Next Move</button>
-<button class="chip locked" data-key="veil">✦ The Veil 🔒</button>
+<button id="veilChip" class="chip locked" data-key="veil">✦ The Veil 🔒</button>
+<div id="paidChips" style="display:none;width:100%;gap:8px;flex-wrap:wrap">
+<button class="chip" data-key="hiddenReality">🌑 Hidden Reality</button>
+<button class="chip" data-key="emotionalDynamics">🌿 Emotional Dynamics</button>
+<button class="chip" data-key="responseArchitecture">🪞 Response Architecture</button>
+</div>
 </div>
 <div class="foot"><span>Layers can be swiped like cards.</span><span>✦ Sylven</span></div>
 </section>
@@ -62,7 +67,7 @@
 <div style="text-align:center;color:#666b74;font-size:10px;margin:20px">BehindWords is an interpretation tool for reflection — not a literal window into another person's mind.</div>
 </main>
 
-<div id="veilModal" class="modal"><div class="modal-box"><div class="modal-symbol">✦</div><h2>The Veil</h2><p>The first glimpse shows what is visible. Deeper layers explore what may sit beneath the words, with more context and psychological detail.</p><ul><li>🌑 Hidden Reality</li><li>🌿 Emotional Dynamics</li><li>👁 Pattern Lens</li><li>🕯 Unsaid Tension</li><li>🪞 Response Architecture</li></ul><div class="modal-actions"><button id="closeVeil" class="btn">Stay here</button><button id="deepBtn" class="btn primary">Continue to Payment</button></div><div id="deepStatus" class="modal-status">Deep Sight • ₹99 / month • secure Razorpay checkout</div></div></div>
+<div id="veilModal" class="modal"><div class="modal-box"><div class="modal-symbol">✦</div><h2>The Veil</h2><p>The first glimpse shows what is visible. Deeper layers explore what may sit beneath the words, with more context and psychological detail.</p><ul><li>🌑 Hidden Reality</li><li>🌿 Emotional Dynamics</li><li>🪞 Response Architecture</li></ul><div class="modal-actions"><button id="closeVeil" class="btn">Stay here</button><button id="deepBtn" class="btn primary">Continue to Payment</button></div><div id="deepStatus" class="modal-status">Deep Sight • ₹99 / month • secure Razorpay checkout</div></div></div>
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
