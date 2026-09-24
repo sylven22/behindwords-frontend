@@ -17,6 +17,36 @@
 @media(max-width:600px){.group-head{margin-bottom:7px}.group-head strong{font-size:11px}.group-head span,.group-head small{font-size:9px}.deep-status{min-height:38px;margin-top:7px}.premium-section{margin-top:11px;padding:10px;border-radius:14px}.premium-head{margin-bottom:8px}.premium-head strong{font-size:11px}.premium-head span{font-size:9px}.premium-head em{font-size:8px;padding:4px 7px}.premium-crown{font-size:15px}.premium-chips{gap:6px}.premium-chip{min-height:38px;font-size:10px}.premium-section .premium-chip:last-child{grid-column:1/-1}}@media(max-width:600px){body{padding:10px 10px 20px;overflow-x:hidden}.app{width:100%}.header{padding:10px 11px;gap:9px;margin-bottom:12px;border-radius:16px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}.brand{width:auto;min-width:0;gap:9px}.brand .eye{width:42px;height:42px;flex:0 0 42px}.brand h1{font-size:15px;line-height:1.15}.brand p{font-size:9px;line-height:1.25;margin-top:3px}.line{width:72px}.actions{width:auto;display:flex;align-items:center;gap:6px}.usage{width:72px;min-width:72px}.usage-top{font-size:9px;margin-bottom:3px}.track{height:4px}.actions .btn{min-height:36px;padding:7px 10px;font-size:12px}.panel{padding:13px;border-radius:17px}.label{font-size:13px}.hint{font-size:11px;margin-bottom:10px}.message{min-height:145px;max-height:42vh;padding:13px;border-radius:13px;font-size:14px;line-height:1.5}.controls{gap:7px;margin-top:9px}.controls .btn{min-height:40px;padding:8px 10px;flex:1;font-size:13px}.choose{margin:13px 0 8px}.chips,#paidChips{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:7px}.chip{width:100%;min-height:40px;padding:7px 6px;font-size:10.5px;line-height:1.2;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal}.foot{margin-top:9px;font-size:10px}.result-head{margin-bottom:9px}.stack,.empty{min-height:58vh;height:58vh;max-height:560px}.empty{padding:20px}.stack-card{padding:15px;border-radius:16px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.card-title{font-size:17px;margin:7px 0 11px}.card-body{font-size:13px;line-height:1.58}.card-foot{font-size:9px;margin-top:14px}.nav{gap:14px;margin-top:9px}.nav button{width:42px;height:42px}.modal{padding:12px}.modal-box{padding:20px 16px;border-radius:18px;max-height:88vh;overflow:auto}.modal-actions{gap:8px}.modal-actions .btn{min-height:44px}.toast{bottom:14px;max-width:calc(100vw - 28px);text-align:center;white-space:normal}.auth{min-height:calc(100vh - 30px)}.auth-box{padding:22px 17px;border-radius:20px}}
 </style>
 <style>
+/* Final Sylven interaction polish */
+.header,.panel{transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease}
+.header:hover,.panel:hover{border-color:rgba(255,255,255,.105)}
+.message{transition:border-color .2s ease,box-shadow .2s ease}
+.message:focus{box-shadow:0 0 0 3px rgba(139,92,246,.055),0 12px 35px rgba(0,0,0,.18)}
+.controls .primary{position:relative;overflow:hidden}
+.controls .primary::after{
+  content:"";position:absolute;inset:-40% -20%;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.16) 48%,transparent 60%);
+  transform:translateX(-70%);transition:transform .7s ease;pointer-events:none
+}
+.controls .primary:hover::after{transform:translateX(70%)}
+.chip{transition:transform .16s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease}
+.chip:focus-visible,.btn:focus-visible{outline:2px solid rgba(189,131,255,.65);outline-offset:2px}
+.stack-card{animation:cardReveal .3s ease both}
+@keyframes cardReveal{from{opacity:0;transform:translateY(calc(var(--y) + 7px)) scale(calc(var(--s) - .015))}to{opacity:var(--o);transform:translateY(var(--y)) scale(var(--s))}}
+@media(min-width:901px){
+  .layout{align-items:start}
+  .panel:first-child{position:sticky;top:18px}
+}
+@media(max-width:600px){
+  .header:hover,.panel:hover{transform:none}
+  .controls .primary::after{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .header,.panel,.message,.controls .primary,.chip,.stack-card{transition:none!important;animation:none!important}
+  .controls .primary::after{display:none}
+}
+</style>
+<style>
 /* Sylven mobile polish — compact, calm, touch-first */
 @media(max-width:600px){
   body{
