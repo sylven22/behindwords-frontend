@@ -16,6 +16,151 @@
 .layer-group{margin-top:2px}.group-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.group-head>div{display:flex;flex-direction:column;gap:2px}.group-head strong{font-size:12px}.group-head span{font-size:10px;color:var(--muted)}.group-head small{font-size:10px;color:#a8a0b5}.core-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.deep-status{width:100%;margin-top:8px;justify-content:center;gap:5px}.deep-status .status-text{font-weight:500;color:var(--muted)}.premium-section{margin-top:14px;padding:12px;border:1px solid rgba(183,122,255,.34);border-radius:16px;background:linear-gradient(145deg,rgba(91,46,140,.10),rgba(0,0,0,.18));box-shadow:0 0 28px rgba(139,92,246,.10),inset 0 0 25px rgba(139,92,246,.035)}.premium-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}.premium-head>div{display:flex;align-items:center;gap:8px}.premium-head>div>div{display:flex;flex-direction:column;gap:2px}.premium-head strong{font-size:12px}.premium-head span{font-size:10px;color:#b5a7c8}.premium-crown{font-size:17px;color:#d9b8ff;text-shadow:0 0 14px rgba(190,130,255,.8)}.premium-head em{font-style:normal;font-size:9px;color:#d7bcff;border:1px solid rgba(183,122,255,.45);border-radius:999px;padding:5px 8px;background:rgba(139,92,246,.08);white-space:nowrap}.premium-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.premium-chip{border-color:rgba(177,112,255,.42);background:linear-gradient(145deg,rgba(115,55,180,.12),rgba(0,0,0,.35));box-shadow:0 0 12px rgba(139,92,246,.08)}.premium-chip:hover{border-color:rgba(202,151,255,.75);box-shadow:0 0 20px rgba(139,92,246,.22);transform:translateY(-1px)}.premium-section .premium-chip:last-child{grid-column:1/-1}@media(max-width:900px){.layout{grid-template-columns:1fr}.header{align-items:flex-start}.actions{flex-wrap:wrap;justify-content:flex-end}.stack{min-height:420px}.empty{min-height:420px}}
 @media(max-width:600px){.group-head{margin-bottom:7px}.group-head strong{font-size:11px}.group-head span,.group-head small{font-size:9px}.deep-status{min-height:38px;margin-top:7px}.premium-section{margin-top:11px;padding:10px;border-radius:14px}.premium-head{margin-bottom:8px}.premium-head strong{font-size:11px}.premium-head span{font-size:9px}.premium-head em{font-size:8px;padding:4px 7px}.premium-crown{font-size:15px}.premium-chips{gap:6px}.premium-chip{min-height:38px;font-size:10px}.premium-section .premium-chip:last-child{grid-column:1/-1}}@media(max-width:600px){body{padding:10px 10px 20px;overflow-x:hidden}.app{width:100%}.header{padding:10px 11px;gap:9px;margin-bottom:12px;border-radius:16px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}.brand{width:auto;min-width:0;gap:9px}.brand .eye{width:42px;height:42px;flex:0 0 42px}.brand h1{font-size:15px;line-height:1.15}.brand p{font-size:9px;line-height:1.25;margin-top:3px}.line{width:72px}.actions{width:auto;display:flex;align-items:center;gap:6px}.usage{width:72px;min-width:72px}.usage-top{font-size:9px;margin-bottom:3px}.track{height:4px}.actions .btn{min-height:36px;padding:7px 10px;font-size:12px}.panel{padding:13px;border-radius:17px}.label{font-size:13px}.hint{font-size:11px;margin-bottom:10px}.message{min-height:145px;max-height:42vh;padding:13px;border-radius:13px;font-size:14px;line-height:1.5}.controls{gap:7px;margin-top:9px}.controls .btn{min-height:40px;padding:8px 10px;flex:1;font-size:13px}.choose{margin:13px 0 8px}.chips,#paidChips{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:7px}.chip{width:100%;min-height:40px;padding:7px 6px;font-size:10.5px;line-height:1.2;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal}.foot{margin-top:9px;font-size:10px}.result-head{margin-bottom:9px}.stack,.empty{min-height:58vh;height:58vh;max-height:560px}.empty{padding:20px}.stack-card{padding:15px;border-radius:16px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.card-title{font-size:17px;margin:7px 0 11px}.card-body{font-size:13px;line-height:1.58}.card-foot{font-size:9px;margin-top:14px}.nav{gap:14px;margin-top:9px}.nav button{width:42px;height:42px}.modal{padding:12px}.modal-box{padding:20px 16px;border-radius:18px;max-height:88vh;overflow:auto}.modal-actions{gap:8px}.modal-actions .btn{min-height:44px}.toast{bottom:14px;max-width:calc(100vw - 28px);text-align:center;white-space:normal}.auth{min-height:calc(100vh - 30px)}.auth-box{padding:22px 17px;border-radius:20px}}
 </style>
+<style>
+/* Sylven mobile polish — compact, calm, touch-first */
+@media(max-width:600px){
+  body{
+    padding:8px 9px 18px;
+    background:
+      radial-gradient(520px at 50% -10%,rgba(110,50,255,.12),transparent 62%),
+      #05040a;
+  }
+  .header{
+    position:relative;
+    padding:9px 10px;
+    margin-bottom:9px;
+    border-radius:14px;
+    gap:7px;
+    box-shadow:0 10px 30px #0007;
+  }
+  .brand{gap:8px}
+  .brand .eye{width:36px;height:36px;flex-basis:36px;border-radius:11px}
+  .brand .eye img{border-radius:10px}
+  .brand h1{font-size:13px;letter-spacing:-.15px}
+  .brand p{font-size:8px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
+  .line{width:52px;height:1px;margin-top:3px}
+  .actions{gap:5px}
+  .usage{
+    width:67px;min-width:67px;
+    padding:5px 6px;border:1px solid rgba(255,255,255,.07);
+    border-radius:9px;background:rgba(255,255,255,.025)
+  }
+  .usage-top{font-size:8px;margin-bottom:3px}
+  .track{height:3px}
+  .actions .btn{
+    min-height:31px;padding:6px 8px;border-radius:9px;font-size:10px
+  }
+
+  .layout{gap:9px}
+  .panel{
+    padding:12px;
+    border-radius:15px;
+    box-shadow:0 12px 34px #0006;
+  }
+  .label{font-size:12px}
+  .hint{font-size:10px;line-height:1.4;margin:3px 0 8px}
+  .message{
+    min-height:128px;
+    max-height:36vh;
+    padding:11px;
+    border-radius:11px;
+    font-size:13px;
+    line-height:1.48;
+    background:rgba(0,0,0,.28)
+  }
+  .controls{gap:6px;margin-top:7px}
+  .controls .btn{
+    min-height:36px;
+    padding:7px 9px;
+    border-radius:10px;
+    font-size:11px
+  }
+  .controls .primary{flex:1.5}
+  .choose{
+    margin:11px 0 6px;
+    padding-top:9px;
+    border-top:1px solid rgba(255,255,255,.055);
+    font-size:10px;
+    letter-spacing:.2px
+  }
+  .group-head{margin-bottom:6px}
+  .group-head strong{font-size:10px}
+  .group-head span,.group-head small{font-size:8px}
+  .chips,#paidChips{gap:5px}
+  .chip{
+    min-height:36px;
+    padding:6px 5px;
+    border-radius:9px;
+    font-size:9.5px;
+    letter-spacing:-.1px
+  }
+  .deep-status{min-height:34px;margin-top:6px;border-radius:9px}
+  .premium-section{
+    margin-top:9px;
+    padding:8px;
+    border-radius:11px;
+    box-shadow:0 0 18px rgba(139,92,246,.07),inset 0 0 18px rgba(139,92,246,.025)
+  }
+  .premium-head{margin-bottom:6px}
+  .premium-head strong{font-size:10px}
+  .premium-head span{font-size:8px}
+  .premium-head em{font-size:7.5px;padding:3px 6px}
+  .premium-crown{font-size:13px}
+  .premium-chips{gap:5px}
+  .premium-chip{min-height:34px;font-size:9px}
+  .foot{font-size:8px;margin-top:7px}
+
+  .result-head{margin-bottom:7px}
+  .result-head strong{font-size:11px}
+  .result-head span{font-size:9px}
+  .stack,.empty{
+    min-height:48vh;
+    height:48vh;
+    max-height:500px
+  }
+  .empty{padding:16px}
+  .empty strong{font-size:12px}
+  .empty div{font-size:10px}
+  .stack-card{
+    padding:13px;
+    border-radius:13px;
+    box-shadow:0 14px 35px #0009
+  }
+  .kicker{font-size:9px}
+  .card-title{font-size:16px;margin:6px 0 9px}
+  .card-body{font-size:12px;line-height:1.55}
+  .card-foot{font-size:8px;margin-top:11px}
+  .nav{gap:10px;margin-top:6px}
+  .nav button{width:34px;height:34px;font-size:12px}
+  .count{font-size:9px}
+
+  .modal{padding:10px}
+  .modal-box{
+    padding:18px 14px;
+    border-radius:16px;
+    max-height:86vh
+  }
+  .modal-symbol{font-size:28px}
+  .modal h2{font-size:18px}
+  .modal p,.modal li{font-size:11px}
+  .modal-actions{gap:6px;margin-top:16px}
+  .modal-actions .btn{min-height:40px;font-size:11px}
+  .modal-status{font-size:9px;margin-top:9px}
+  .toast{bottom:10px;font-size:10px;padding:8px 11px}
+
+  /* subtle motion, never distracting */
+  .panel,.header{animation:sylvenIn .32s ease both}
+  .chip,.btn{transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,background .16s ease}
+  .chip:active,.btn:active{transform:scale(.98)}
+}
+@keyframes sylvenIn{
+  from{opacity:0;transform:translateY(4px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+</style>
 </head>
 <body>
 <section id="authScreen" class="auth">
