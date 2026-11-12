@@ -232,7 +232,7 @@
 <main id="app" class="app">
 <header class="header">
 <div class="brand"><div class="eye"><img src="sylven_eye3.png" alt="Sylven"></div><div><h1>BehindWords — Sylven Mode</h1><p>Read the surface. Explore the mind. Look beneath.</p><div class="line"></div></div></div>
-<div class="actions"><div class="header-tools"><button id="logoutBtn" class="btn">Premium Login</button><div class="usage usage-header"><div class="usage-top"><span>First Glimpses</span><strong id="usageText">3 / 3</strong></div><div class="track"><div id="usageFill" class="fill"></div></div></div></div></div>
+<div class="actions"><div class="header-tools"><button id="logoutBtn" class="btn">Premium Login</button><div class="usage usage-header"><div class="usage-top"><span>First Glimpses</span><strong id="usageText">3 left today</strong></div><div class="track"><div id="usageFill" class="fill"></div></div></div></div></div>
 </header>
 
 <div class="layout">
@@ -299,7 +299,7 @@ $("authSubmit").onclick=async()=>{const email=$("authEmail").value.trim(),passwo
 $("logoutBtn").onclick=async()=>{const s=await session();if(s){await sb.auth.signOut();premium=false;applyPremiumUI();$("logoutBtn").textContent="Premium Login";await updateUsage();toast("Logged out. Free access remains open.")}else{$("authScreen").classList.remove("hidden");$("authScreen").scrollIntoView({behavior:"smooth"});setMode("login")}};
 (async()=>{const s=await session();if(s){$("logoutBtn").textContent="Log out";await updateUsage();await refreshSubscription()}else{await updateUsage()}})();
 
-function paint(n){if(n===null||premium){$("usageText").textContent="∞";$("usageFill").style.width="100%";return}n=Math.max(0,Math.min(3,Number(n)||0));$("usageText").textContent=n+" / 3 today";$("usageFill").style.width=(n/3*100)+"%"}
+function paint(n){if(n===null||premium){$("usageText").textContent="∞";$("usageFill").style.width="100%";return}n=Math.max(0,Math.min(3,Number(n)||0));$("usageText").textContent=n+" left today";$("usageFill").style.width=(n/3*100)+"%"}
 async function updateUsage(){try{const r=await fetch(BACKEND_URL+"/usage",{headers:await apiHeaders()}),d=await r.json();if(r.ok){if(!d.premium)premium=false;paint(d.remaining);applyPremiumUI()}}catch(e){console.error(e)}}
 async function refreshSubscription(){const s=await session();if(!s)return false;try{const r=await fetch(BACKEND_URL+"/subscription-status",{headers:{Authorization:"Bearer "+s.access_token}}),d=await r.json();if(r.ok){premium=!!d.active;applyPremiumUI();paint(premium?null:3);return premium}}catch(e){console.error(e)}return false}
 function applyPremiumUI(){const paid=$("paidChips"),veil=$("veilChip"),section=$("premiumSection");if(!paid||!veil||!section)return;if(premium){section.style.display="block";veil.innerHTML="✦ Deep Sight <span class='status-text'>Active</span>";veil.classList.remove("locked");$("stackHint").textContent="All layers are open."}else{section.style.display="none";veil.innerHTML="✦ Deep Sight <span class='status-text'>Unlock</span>";veil.classList.add("locked");$("stackHint").textContent="A quiet place for what unfolds."}}
